@@ -163,3 +163,4 @@ cython_debug/
 
 # Peronal
 .vscode/
+pn.ipynb
