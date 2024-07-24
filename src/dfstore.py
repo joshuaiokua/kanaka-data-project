@@ -15,10 +15,10 @@ from src.data_loader import load_data_from_url
 from dataclasses import dataclass, field
 from datetime import datetime
 from copy import deepcopy
-from pandas import DataFrame
+from pandas import DataFrame, ExcelFile, read_excel
 import pickle
 from collections.abc import MutableMapping
-from typing import Union, Any, Optional
+from typing import Union, Any, Optional, List
 
 ### --- CLASSES --- ###
 @dataclass
@@ -74,12 +74,56 @@ class DataFrameEntry:
 
 
 class DataFrameStore(MutableMapping):
+    """
+    A dictionary-like object for storing DataFrameEntry objects.
 
-    def __init__(self, data_source: Union[str, dict] = None):
+    TODO: Listed below.
+        - Figure out a way list all the keys in the store without using KeysView object and maybe making provide useful information about the data stored in the store
+        - Updating entries in the store in a more user-friendly way
+    """
+
+    def __init__(self, data_source: Union[str, dict] = None, **kwargs):
         self._store = {}
 
         if data_source:
-            self.load_data(data_source)
+            self.load_data(data_source, **kwargs)
 
-    def __setitem__(self, key: Any, value: Any) -> None:
-        return super().__setitem__(key, value)
+    def __setitem__(self, key: str, value: DataFrameEntry) -> None:
+        if not isinstance(value, DataFrameEntry):
+            raise ValueError('Value must be a DataFrameEntry object.')
+        self._store[key] = value
+
+    def __getitem__(self, key: str) -> DataFrameEntry:
+        return self._store[key]
+    
+    def __delitem__(self, key: str) -> None:
+        del self._store[key]
+
+    def __iter__(self):
+        return iter(self._store)
+    
+    def __len__(self) -> int:
+        return len(self._store)
+    
+    def __repr__(self) -> str:
+        return repr(self._store)
+    
+    def load_data(self, data_source: Union[str, dict], sheet_name_pairs: List[tuple] = None) -> None:
+        """
+        TODO: Listed below.
+            - Add various data loading methods (e.g. from URL, from file, etc.). Currently defaults to loading excel file from URL given that's what I'm working with at OHA
+            - Add support for loading data from a dictionary
+            - Add func for getting specific sheet source
+            - Add ability to preprocess working data upon loading while keeping original data intact
+        """
+        excel_file = ExcelFile(
+            load_data_from_url(data_source)
+            )
+        
+        if sheet_name_pairs:
+            for sheet, name in sheet_name_pairs:
+                self._store[name] = DataFrameEntry(name, read_excel(excel_file, sheet_name=sheet))
+        else:
+            for sheet in excel_file.sheet_names:
+                self._store[sheet] = DataFrameEntry(sheet, read_excel(excel_file, sheet_name=sheet))
+        
