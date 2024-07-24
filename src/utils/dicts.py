@@ -2,8 +2,6 @@
 
 A collection of helpful dictionaries used in the project.
 
-TODO: Potentially revisit using NTLK's WordNet for more robust word mappings instead of simple hashing method currently employed which only captures very minute variations amongst words.
-
 """
 
 from src.utils.general import load_json
@@ -11,6 +9,13 @@ from src.utils.strings import generalized_string_hash
 
 ### --- CLASSES --- ###
 class HashedKeyDict(dict):
+    """
+    A dictionary that hashes keys before storing them, allowing for slightly more robust and simplified key matching. For example, 'apple' and 'apples' will hash to the same value. Minors misspellings should also hash to the same value, such as 'population' and 'populationa'.
+
+    TODO: Potentially revisit using NTLK for more robust word mappings instead of simple hashing method currently employed which only captures very minute variations amongst words. However this might be overkill for such a simple use case.
+
+    """
+
     def __init__(self, data=None):
         super().__init__()
 
