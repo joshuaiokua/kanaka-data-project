@@ -16,7 +16,7 @@ class HashedKeyDict(dict):
 
     """
 
-    def __init__(self, data=None):
+    def __init__(self, data = None):
         super().__init__()
 
         if data:
@@ -36,7 +36,7 @@ class HashedKeyDict(dict):
         hashed_key = generalized_string_hash(key)
         return super().__getitem__(hashed_key)
     
-    def get(self, key, default=None):
+    def get(self, key, default = None):
         hashed_key = generalized_string_hash(key)
         return super().get(hashed_key, default)
     
@@ -47,7 +47,7 @@ class HashedKeyDict(dict):
     def __repr__(self) -> str:
         return super().__repr__()
     
-    def load_data(self, data:dict):
+    def load_data(self, data: dict):
         for k, v in data.items():
             self.__setitem__(k, v)
         return self

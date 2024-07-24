@@ -4,7 +4,7 @@ String utility functions.
 
 """
 
-def normalize_string(text:str) -> str:
+def normalize_string(text: str) -> str:
     """
     Normalizes the given text by removing non-alphabetic characters and the trailing 's' character.
     """
@@ -19,7 +19,7 @@ def normalize_string(text:str) -> str:
 
     return ''.join(normalized_chars)
 
-def generalized_string_hash(text:str, ceiling:int=5, padding:int=3) -> int:
+def generalized_string_hash(text: str, ceiling: int = 5, padding: int = 3) -> int:
     """
     Generates a generalized hash for the given text, ensuring similar words produce the same hash.
     TODO: Revisit function name.
