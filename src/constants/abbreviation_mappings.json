@@ -1,0 +1,11 @@
+{
+    "population": "pop",
+    "percent": "pct",
+    "%": "pct",
+    "estimate": "est",
+    "average": "avg",
+    "median": "med",
+    "standard": "std",
+    "deviation": "dev",
+    "hawaiian": "hawaiian"
+}
