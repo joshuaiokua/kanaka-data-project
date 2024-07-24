@@ -80,6 +80,8 @@ class DataFrameStore(MutableMapping):
     TODO: Listed below.
         - Figure out a way list all the keys in the store without using KeysView object and maybe making provide useful information about the data stored in the store
         - Updating entries in the store in a more user-friendly way
+        - Way to get df that was last modified
+        - Save store to disk
     """
 
     def __init__(self, data_source: Union[str, dict] = None, **kwargs):
