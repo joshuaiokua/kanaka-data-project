@@ -42,7 +42,7 @@ def format_column_names(df: DataFrame, inplace: bool = False, flag_word: str = '
     last_valid_column_idx = 0
 
     for col_idx, col in enumerate(curr_names):
-        if flag_word in col:
+        if (isna(col)) or (flag_word in col):
             # Determine if the first row value in this column is NaN
             row_idx = 1 if isna(df.iloc[0, col_idx]) else 0
             prev_col = curr_names[last_valid_column_idx]
