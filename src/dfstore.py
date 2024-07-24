@@ -13,7 +13,7 @@ from src.data_loader import load_data_from_url
 from dataclasses import dataclass, field
 from datetime import datetime
 from copy import deepcopy
-import pandas as pd
+from pandas import DataFrame
 import pickle
 from collections.abc import MutableMapping
 from typing import Union, Any
@@ -35,16 +35,16 @@ class DataFrameEntry:
         self.working_data = deepcopy(self.original_data)
         self.has_working_data = bool(self.working_data)
 
-    def load_original_data(self) -> pd.DataFrame:
+    def load_original_data(self) -> DataFrame:
         return pickle.loads(self.original_data)
     
-    def load_working_data(self) -> pd.DataFrame:
+    def load_working_data(self) -> DataFrame:
         if self.has_working_data:
             return pickle.loads(self.working_data)
         else:
             raise ValueError(f'No modified data exists for {self.name}.')
         
-    def update_working_data(self, new_data: pd.DataFrame) -> None:
+    def update_working_data(self, new_data: DataFrame) -> None:
         self.working_data = pickle.dumps(new_data)
         self.last_modified = datetime.now()
 
