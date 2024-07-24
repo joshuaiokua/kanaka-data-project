@@ -1,6 +1,7 @@
 """
 
 A collection of helpful dictionaries used in the project.
+
 TODO: Potentially revisit using NTLK's WordNet for more robust word mappings instead of simple hashing method currently employed which only captures very minute variations amongst words.
 
 """
