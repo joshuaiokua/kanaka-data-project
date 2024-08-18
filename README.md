@@ -1,5 +1,5 @@
 # kanaka-data-project
-This is a project to analyze the data of the Kanaka Maoli people of Hawaii, visualizing key insights or trends in the data. The various datasets used in this project are list below.
+An ongoing project using Llama 3.1, AWS, and Streamlit to clean, unify, and visualize Native Hawaiian data. Analyzes data from multiple sources, highlighting key insights and trends through interactive visualizations. The various datasets used in this project are list below.
 
 ## Datasets
 
