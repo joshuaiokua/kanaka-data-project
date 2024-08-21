@@ -1,5 +1,7 @@
 # Data Catalog
-The unprocessed, processing (i.e. data currently being cleaned), and processed data used in this project.
+The unprocessed, preprocessed, and processed data used in this project is listed below. 
+
+> **Unprocessed** data is data as it was originally sourced. **Preprocessed** data is data that has been cleaned and transformed, but may require further processing before it can be used. **Processed** data is data that has been cleaned and is ready for model or visualization use.
 
 ## Data Cleaning Progress
 ### Native Hawaiian Data Book 2023 [[source]](https://ohadatabook.com/DB2023.html)
@@ -14,7 +16,7 @@ The unprocessed, processing (i.e. data currently being cleaned), and processed d
 - [Chapter 9: Crime](https://ohadatabook.com/go_chap09.23.html)
 - [Chapter 10: Legacy Data](https://ohadatabook.com/go_chap10.23.html)[^1]
 
-#### Processing
+#### Preprocessed
 - [Chapter 1: Population](https://ohadatabook.com/go_chap01.23.html) | ~5% complete
 
 #### Processed
