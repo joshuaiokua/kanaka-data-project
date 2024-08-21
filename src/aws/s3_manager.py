@@ -13,60 +13,73 @@ Functions:
 Author: Joshua Iokua Albano
 Last Updated: 
 """
+from src.aws.base_aws_manager import BaseAWSManager
 from src.utils.general_utils import load_aws_variables
 
-import boto3
+import logging
 from io import BytesIO
 from typing import Union
 
-### --- CLIENT INITIALIZATION --- ###
-credentials, s3_variables = load_aws_variables('s3')
-proj_bucket = s3_variables['project_bucket']
-shared_bucket = s3_variables['shared_bucket']
+### --- MODULE CONFIGURATION --- ###
+resource = 's3'
 
-s3 = boto3.client('s3', **credentials)
+# Basic logging configuration
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-### --- FUNCTION DEFINITIONS --- ###
-def upload_data_to_s3(data: Union[str, bytes, BytesIO], object_name: str, bucket_name: str = proj_bucket, content_type: str = None) -> None:
-    """
-    Upload data to an S3 bucket.
+### --- BASE S3 MANAGER CLASS --- ###
+class S3Manager(BaseAWSManager):
+    def __init__(self, credentials: dict = None, project_bucket: str = None, shared_bucket: str = None):
+        # Initialize base aws manager class with S3 resource
+        super().__init__(resource, credentials)
 
-    Args:
-      data (Union[str, bytes, BytesIO]): The data to upload to the S3 bucket.
-      object_name (str): The name of the object to create in the S3 bucket. This serves as both the file path and the object name as it appears in the bucket (e.g. 'data/my_data.csv' -> 'bucket_name/data/my_data.csv').
-      bucket_name (str, optional): The name of the bucket to upload the data to. Defaults to the project bucket.
-      content_type (str, optional): The content type of the data being uploaded. Defaults to None.
-    """
-    # Convert data to bytes if it is a string
-    if isinstance(data, str):
-        data = data.encode('utf-8')
-    elif isinstance(data, BytesIO):
-        data = data.read()
+        # Load resource variables if all are not provided
+        if not all([project_bucket, shared_bucket]):
+            _, resource_variables = load_aws_variables(resource)
+            project_bucket = project_bucket or resource_variables.get('project_bucket')
+            shared_bucket = shared_bucket or resource_variables.get('shared_bucket')
 
-    # Upload the data to the S3 bucket
-    try:
-        s3.put_object(Bucket=bucket_name, Key=object_name, Body=data, ContentType=content_type)
-        print(f'Uploaded data to {bucket_name}/{object_name}.')
-    except Exception as e:
-        print(f'Error uploading data to {bucket_name}/{object_name}: {e}')
+        self.project_bucket = project_bucket 
+        self.shared_bucket = shared_bucket
 
-def upload_file_to_s3(file_path: str, object_name: str, bucket_name: str = proj_bucket, content_type: str = None) -> None:
-    """
-    Upload a file to an S3 bucket.
+        logger.info(f'S3Manager initialized with project bucket: {project_bucket} and shared bucket: {shared_bucket}.')
 
-    Args:
-      file_path (str): The path to the file to upload to the S3 bucket.
-      object_name (str): The name of the object to create in the S3 bucket. This functions as both the file path and the object name as it appears in the bucket (e.g. 'data/my_data.csv' -> 'bucket_name/data/my_data.csv').
-      bucket_name (str, optional): The name of the bucket to upload the data to. Defaults to the project bucket.
-      content_type (str, optional): The content type of the data being uploaded. Defaults to None.
-    """
-    try:
+    def upload_data(self, data: Union[str, bytes, BytesIO], object_name: str, bucket_name: str = None, content_type: str = None) -> None:
+        """
+        Upload data to an S3 bucket.
+
+        Args:
+            data (Union[str, bytes, BytesIO]): The data to upload.
+            object_name (str): Name of the object created within the bucket, acting as its file path.
+            bucket_name (str, optional): The name of the bucket to upload to. Defaults to None.
+            content_type (str, optional): The content type of the object. Defaults to None.
+        """
+        # Set default bucket if not provided
+        bucket_name = bucket_name or self.project_bucket
+
+        # Convert data to BytesIO if provided as a string
+        if isinstance(data, str):
+            data = data.encode('utf-8')
+        elif not isinstance(data, (bytes, BytesIO)):
+            raise TypeError('Data must be a string, bytes, or BytesIO object.')
+        
+        # Upload data to S3
+        try:
+            self.client.put_object(
+                Bucket=bucket_name, 
+                Key=object_name, 
+                Body=data if isinstance(data, BytesIO) else BytesIO(data), 
+                ContentType=content_type
+            )
+            logger.info(f'Successfully uploaded data to {bucket_name}/{object_name}.')
+        except Exception as e:
+            logger.error(f'Failed to upload data to {bucket_name}/{object_name}: {e}', exc_info=True)
+            raise e
+    
+    def upload_file_to_s3(self, file_path: str, object_name: str, bucket_name: str = None, content_type: str = None) -> None:
+        """
+        Upload a file to an S3 bucket given a file_path, delegating to upload_data_to_s3 method.
+        """
         with open(file_path, 'rb') as file:
-            s3.put_object(Bucket=bucket_name, Key=object_name, Body=file, ContentType=content_type)
-        print(f'Uploaded file to {bucket_name}/{object_name}.')
-    except Exception as e:
-        print(f'Error uploading file to {bucket_name}/{object_name}: {e}')
-
-
-
+            self.upload_data_to_s3(file.read(), object_name, bucket_name, content_type)
