@@ -24,9 +24,7 @@ from typing import Union
 resource = 's3'
 
 # Basic logging configuration
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 
 ### --- BASE S3 MANAGER CLASS --- ###
 class S3Manager(BaseAWSManager):
@@ -42,8 +40,6 @@ class S3Manager(BaseAWSManager):
 
         self.project_bucket = project_bucket 
         self.shared_bucket = shared_bucket
-
-        logger.info(f'S3Manager initialized with project bucket: {project_bucket} and shared bucket: {shared_bucket}.')
 
     def upload_data(self, data: Union[str, bytes, BytesIO], object_name: str, bucket_name: str = None, content_type: str = None) -> None:
         """

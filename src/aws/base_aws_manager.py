@@ -4,7 +4,7 @@ base_aws_manager.py
 Base class for managing AWS resources, implementing common functions and variables needed for interacting with all AWS services as used in this project.
 """
 
-from utils.general_utils import load_aws_variables
+from src.utils.general_utils import load_aws_variables
 
 import boto3
 import logging
@@ -36,7 +36,7 @@ class BaseAWSManager:
         self.client = boto3.client(resource, **credentials, **kwargs)
         self.resource = resource
         
-        logger.info(f'{self.__class__.__name__} initialized for {resource}.')
+        logger.info(f'{self.__class__.__name__} initialized for {resource.capitalize()}.')
 
     def get_client(self):
         "Get the AWS client object for the resource."
