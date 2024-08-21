@@ -15,7 +15,7 @@ The unprocessed, processing (i.e. data currently being cleaned), and processed d
 - [Chapter 10: Legacy Data](https://ohadatabook.com/go_chap10.23.html)[^1]
 
 #### Processing
-- [Chapter 1: Population](https://ohadatabook.com/go_chap01.23.html) | 🟢:white_circle::white_circle::white_circle::white_circle::white_circle::white_circle::white_circle::white_circle::white_circle:
+- [Chapter 1: Population](https://ohadatabook.com/go_chap01.23.html) | 🟢 :white_circle: :white_circle::white_circle::white_circle::white_circle::white_circle::white_circle::white_circle::white_circle:
 
 #### Processed
 - None
