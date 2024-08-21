@@ -25,11 +25,11 @@ def load_aws_variables(resource: str = None) -> Tuple[Dict[str, str], Union[Dict
     Load AWS credentials and other variables listed in a .env file.
 
     Args:
-      resource (str, optional): A string representing the AWS resource to load variables for (e.g. 's3'). Defaults to None.
+        resource (str, optional): A string representing the AWS resource to load variables for (e.g. 's3'). Defaults to None.
 
     Returns:
-      credentials (Dict[str, str]): A dictionary containing the AWS credentials.
-      resource_variables (Dict[str, str], optional): A dictionary containing the resource-specific variables, if any. Defaults to None.
+        credentials (Dict[str, str]): A dictionary containing the AWS credentials.
+        resource_variables (Dict[str, str], optional): A dictionary containing the resource-specific variables, if any. Defaults to None.
     """
     load_dotenv()
     
