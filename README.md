@@ -45,6 +45,7 @@ Meta's newest LLM, Llama 3.1, is the primary LLM used in this project. Other mod
 ### [AWS](https://aws.amazon.com/) (Free Tier)
 Cloud data and model storage, where needed, is provided by AWS. The free tier is used because I am poor :sob:. I fully understand that storing and servicing models using the free tier services is not optimal and that AWS offers more powerful services for a price (e.g. SageMaker). Listed below are the specific AWS services used in this project:
  - S3
+ - DynamoDB or RDS (TBD)
 
 ### [Streamlit](https://streamlit.io/)
 Streamlit is a Python library that allows for the creation of interactive web applications. This project will use Streamlit to create interactive visualizations of the data, making it more accessible and engaging for users.
