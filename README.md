@@ -61,6 +61,5 @@ See the `README.md` file in the `data` folder for more information on the data u
 - **Format**: Tabbed Excel file, with each tab representing a different dataset.
 - **Ownership**: The Native Hawaiian Data Book is published by the Office of Hawaiian Affairs (OHA), a public agency that serves as a resource for Native Hawaiians. The data book is compiled by the Research Division of OHA.
 
-----------------
 
 [^bignote]: I may revisit the idea of storing all unprocessed data in the `data` folder. This may not be the best approach, as the data may, at some point, be too large to store in a GitHub repository. Storing in a cloud service like AWS may be a better approach or else simply pointing to the data source in the project and leaving it at that. I would like to prove some sense of data integrity, however, so I will likely store the data in the `data` folder until I can find a better solution.
