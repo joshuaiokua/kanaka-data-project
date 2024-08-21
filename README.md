@@ -55,8 +55,7 @@ Streamlit is a Python library that allows for the creation of interactive web ap
 
 ## Data
 ### [Native Hawaiian Data Book 2023](https://www.ohadatabook.com/DB2023.html)
-The Native Hawaiian Data Book 2023 is a comprehensive collection of data on Native Hawaiians in Hawaii. The data book includes information on population, education, health, and more.
-
+The Native Hawaiian Data Book 2023 is a comprehensive collection of data on Native Hawaiians in Hawaii. The data book includes information on population, education, health, and more. This data source is an invaluable consolidation of data on Kanaka Maoli, with the full list of data sources it draws from listed [here](https://ohadatabook.com/fr_statlinks.11.html).
 
 ----------------
 
