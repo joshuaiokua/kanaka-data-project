@@ -54,8 +54,12 @@ Cloud data and model storage, where needed, is provided by AWS. The free tier is
 Streamlit is a Python library that allows for the creation of interactive web applications. This project will use Streamlit to create interactive visualizations of the data, making it more accessible and engaging for users.
 
 ## Data
+See the `README.md` file in the `data` folder for more information on the data used in this project, what portion of the data has been cleaned, the intended use of the data, and the original source of the data. An overview of the data used in this project is provided below.
+
 ### [Native Hawaiian Data Book 2023](https://www.ohadatabook.com/DB2023.html)
-The Native Hawaiian Data Book 2023 is a comprehensive collection of data on Native Hawaiians in Hawaii. The data book includes information on population, education, health, and more. This data source is an invaluable consolidation of data on Kanaka Maoli, with the full list of data sources it draws from listed [here](https://ohadatabook.com/fr_statlinks.11.html).
+- **Description**: The Native Hawaiian Data Book 2023 is a comprehensive collection of data on Native Hawaiians in Hawaii. The data book includes information on population, education, health, and more. This data source is an invaluable consolidation of data on Kanaka Maoli and draws from county, state, and federal databases. The full list of data sources it draws from listed [here](https://ohadatabook.com/fr_statlinks.11.html).
+- **Format**: Tabbed Excel file, with each tab representing a different dataset.
+- **Ownership**: The Native Hawaiian Data Book is published by the Office of Hawaiian Affairs (OHA), a public agency that serves as a resource for Native Hawaiians. The data book is compiled by the Research Division of OHA.
 
 ----------------
 
