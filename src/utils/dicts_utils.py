@@ -4,8 +4,8 @@ A collection of helpful dictionaries used in the project.
 
 """
 
-from src.utils.general import load_json
-from src.utils.strings import generalized_string_hash
+from utils.general_utils import load_json
+from utils.strings_utils import generalized_string_hash
 
 ### --- CLASSES --- ###
 class HashedKeyDict(dict):
