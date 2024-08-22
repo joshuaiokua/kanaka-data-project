@@ -3,5 +3,5 @@ requests
 openpyxl
 python-dotenv
 
-# Personal AWS Package
-git+https://github.com/joshuaiokua/awshucks.git@main#egg=awshucks
+### --- Personal Packages --- ###
+git+https://github.com/joshuaiokua/awshucks.git@main#egg=awshucks # AWS
