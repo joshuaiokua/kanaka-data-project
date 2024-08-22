@@ -1,11 +1,13 @@
 """
 
-A collection of helpful dictionaries used in the project.
+A collection of helpful dictionaries used in the project. 
+NOTE: May remove.
 
 """
 
-from src.utils.general import load_json
-from src.utils.strings import generalized_string_hash
+from utils.general_utils import load_json
+from utils.strings_utils import generalized_string_hash
+from src.constants.mappings import ABBREVIATION_MAP
 
 ### --- CLASSES --- ###
 class HashedKeyDict(dict):
@@ -54,4 +56,4 @@ class HashedKeyDict(dict):
 
 
 ### --- EXPORTABLE VARIABLES --- ###
-abbreviation_map = HashedKeyDict('src/constants/abbreviation_mappings.json')
+abbreviation_map = HashedKeyDict(ABBREVIATION_MAP)

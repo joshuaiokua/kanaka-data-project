@@ -1,3 +1,7 @@
 pandas
 requests
 openpyxl
+python-dotenv
+
+### --- Personal Packages --- ###
+git+https://github.com/joshuaiokua/awshucks.git@main#egg=awshucks # AWS

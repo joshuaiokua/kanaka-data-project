@@ -5,7 +5,7 @@ Functionality for formatting data, as distinct from transforming it. That is, th
 """
 
 # Local Imports
-from src.utils.dicts import abbreviation_map
+from utils.dicts_utils import abbreviation_map
 
 # External Imports
 from re import split
