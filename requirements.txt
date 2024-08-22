@@ -1,5 +1,6 @@
 pandas
 requests
 openpyxl
-boto3
 python-dotenv
+
+git+https://github.com/joshuaiokua/awshucks.git@main#egg=awshucks
