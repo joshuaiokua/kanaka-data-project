@@ -12,7 +12,6 @@ from typing import Dict
 
 ### --- MODULE CONFIGURATION --- ###
 # Basic logging configuration
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 ### --- BASE AWS MANAGER CLASS --- ###

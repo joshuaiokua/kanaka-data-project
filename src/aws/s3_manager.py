@@ -73,9 +73,23 @@ class S3Manager(BaseAWSManager):
             logger.error(f'Failed to upload data to {bucket_name}/{object_name}: {e}', exc_info=True)
             raise e
     
-    def upload_file_to_s3(self, file_path: str, object_name: str, bucket_name: str = None, content_type: str = None) -> None:
-        """
-        Upload a file to an S3 bucket given a file_path, delegating to upload_data_to_s3 method.
-        """
+    def upload_file(self, file_path: str, object_name: str, bucket_name: str = None, content_type: str = None) -> None:
+        "Upload a file to an S3 bucket given a file_path, delegating to upload_data_to_s3 method."
         with open(file_path, 'rb') as file:
             self.upload_data_to_s3(file.read(), object_name, bucket_name, content_type)
+
+    def download_data(self, object_name: str, bucket_name: str = None) -> Union[bytes, str]:
+        """
+        Download data from an S3 bucket.
+
+        Args:
+            object_name (str): Name of the object to download.
+            bucket_name (str, optional): The name of the bucket to download from. Defaults to None.
+
+        Returns:
+            Union[bytes, str]: The data downloaded from the object.
+        """
+        # Set default bucket if not provided
+        bucket_name = bucket_name or self.project_bucket
+
+        # Download dat
