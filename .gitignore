@@ -164,4 +164,5 @@ cython_debug/
 # Peronal
 .vscode/
 pn.ipynb
-*private/
+*local/
+uv.lock
