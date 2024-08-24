@@ -1,6 +1,6 @@
 [project]
 name = "kanaka-data-project"
-version = "0.0.01"
+version = "0.0.0"
 description = "Data project exploring data on Kanaka Maoli"
 authors = [{name = "Joshua Iokua Albano"}]
 readme = "README.md"
