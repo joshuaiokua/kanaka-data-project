@@ -3,6 +3,9 @@ data_processing/loaders.py
 
 Functionality for loading data from various sources.
 
+TODO:
+- Revisit logic for renaming columns
+
 Functions:
 - load_json: Load a JSON file into a dictionary.
 - load_data_from_url: Load data from a URL.
