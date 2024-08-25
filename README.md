@@ -22,7 +22,13 @@ This project aims to centralize, clean, and make data on Kanaka Maoli (Native Ha
 
 This project respects the original work of organizations like the Office of Hawaiian Affairs and seeks to build on their efforts, not critique them. By making the data more accessible, the project hopes to inspire more exploration of the original sources and highlight the value of the work done by these organizations.[^bignote2]
 
-Within this overarching goal, the project will also explore several specific questions. These questions are dynamic and will evolve as the project progresses. Current areas of focus include:
+Within this overarching goal, the project will also explore several specific ideas, listed below, which help to guide development and, as such, are likely to change as the project progresses. See `experiments/README.md` for more information.
+- LLM question-answering over numerical datasets
+- Efficacy of vectorizing numerical data for LLMs
+- Compute-effective use of LLMs to summarize small portions of data
+- How to leverage LLMs to expand data interactivity
+- Fine-tuning requirements for LLMs to work with population data, which might not be expansive or else be biased
+- Easier ways to work with tabbed Excel files in Jupyter Notebook
 
 ### **Working With Tabbed Excel Files**
 - **Methodology:** Many datasets, such as those provided in the Native Hawaiian Data Book 2023 (described in the [data](#data) section), are stored in tabbed Excel files, which present challenges for data manipulation. This project will investigate the best approaches for cleaning and unifying this data while preserving its original tabular structure and making it more compatible with modern data science tools.
