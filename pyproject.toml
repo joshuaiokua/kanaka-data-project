@@ -10,7 +10,23 @@ dependencies = [
     "requests",
     "openpyxl",
     "python-dotenv",
+    "langchain",
+    "qdrant-client[fastembed]",
     "awshucks",
+]
+
+[project.optional-dependencies]
+openai = [
+    "openai",
+    "langchain-openai",
+]
+anthropic = [
+    "anthropic",
+    "langchain-anthropic",
+]
+groq = [
+    "groq",
+    "langchain-groq",
 ]
 
 [build-system]
