@@ -23,8 +23,4 @@ This experiment will explore how LLMs can be used to create interactive visualiz
 ### **Fine-Tuning LLMs for Population Data**
 This experiment will focus on the specific requirements for fine-tuning LLMs to work with population data, which may not be as expansive or as diverse as other types of data. The goal is to determine how to optimize LLMs for working with population data, which may require specialized training data and fine-tuning techniques.
 
-### **Working With Tabbed Excel Files**
-This experiment will investigate the best approaches for cleaning and unifying tabbed Excel files, which present challenges for data manipulation. The goal is to develop methods for cleaning and unifying this data while preserving its original tabular structure and making it more compatible with modern data science tools. A key consideration is how to effectively track the progress of cleaning and unifying large datasets, such as the Native Hawaiian Data Book 2023, which contains over 100 tabs of data.
-
-
 ## Completed Experiments
