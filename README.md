@@ -3,8 +3,7 @@ An ongoing project using Llama 3.1, AWS, and Streamlit to clean, unify, and visu
 
 ## Table of Contents
 - [**Project Description and Goals**](#project-description-and-goals)
-  - [Working With Tabbed Excel Files](#working-with-tabbed-excel-files)
-  - [Expanding Data Interactivity](#expanding-data-interactivity)
+  - [Research Experiments](#research-experiments)
 - [**Installation and Usage**](#installation-and-usage)
    - [Prerequisites](#prerequisites)
    - [Installation](#installation)
@@ -12,6 +11,7 @@ An ongoing project using Llama 3.1, AWS, and Streamlit to clean, unify, and visu
 - [**Tools**](#tools)
    - [Llama 3.1](#llama-31)
    - [AWS](#aws-free-tier)
+   - [Qdrant](#qdrant)
    - [Streamlit](#streamlit)
 - [**Data**](#data)
    - [Native Hawaiian Data Book 2023](#native-hawaiian-data-book-2023)
@@ -22,10 +22,10 @@ This project aims to centralize, clean, and make data on Kanaka Maoli (Native Ha
 
 This project respects the original work of organizations like the Office of Hawaiian Affairs and seeks to build on their efforts, not critique them. By making the data more accessible, the project hopes to inspire more exploration of the original sources and highlight the value of the work done by these organizations.[^bignote2]
 
-Within this overarching goal, the project will also explore several specific ideas, listed below, which help to guide development and, as such, are likely to change as the project progresses. See `experiments/README.md` for more information.
+### Research Experiments
+Within this project's overarching goal, I will also explore several specific ideas, listed below, which help to guide development and, as such, are likely to change as the project progresses. See `experiments/README.md` for more information.
 - LLM question-answering over numerical datasets
 - Efficacy of vectorizing numerical data for LLMs
-- Compute-effective use of LLMs to summarize small portions of data
 - How to leverage LLMs to expand data interactivity
 - Fine-tuning requirements for LLMs to work with population data, which might not be expansive or else be biased
 - Easier ways to work with tabbed Excel files in Jupyter Notebook
@@ -58,7 +58,10 @@ Cloud data and model training and provision, where needed, is provided by AWS. I
  - (TBD) DynamoDB or RDS
  - (TBD) SageMaker[^bignote3]
 
-> **Note:** As I have a few separate projects that interact with AWS, I've centralized all code I've written for AWS in a single repository listed in the `requirements.txt` file. As of now (8/24), the repository is private, but I may make it public in the future if only for the sake of transparency. I can assure you that the code is not particularly interesting and simply caters to my idiosyncrasies.
+> **Note:** As I have a few separate projects that interact with AWS, I've centralized all code I've written for AWS in a single repository listed in the `pyproject.toml` file as `awshucks`. As of now (8/24), the repository is private, but I may make it public in the future if only for the sake of transparency. I can assure you that the code is not particularly interesting and simply caters to my idiosyncrasies.
+
+### [Qdrant](https://qdrant.com/)
+Qdrant is an open-source vector search engine that allows for the efficient storage and retrieval of high-dimensional vectors. This project will explore the effectiveness of vectorizing numerical data for hybrid model RAG.
 
 ### [Streamlit](https://streamlit.io/)
 Streamlit is a Python library that allows for the creation of interactive web applications. This project will use Streamlit to create interactive visualizations of the data, making it more accessible and engaging for users.
