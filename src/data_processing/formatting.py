@@ -7,6 +7,7 @@ Functions:
 - format_column_name: Format a singular column name.
 - format_column_names: Format a list of column names.
 """
+from src.constants.mappings import SUBSTITUTION_MAP
 
 import re
 from pandas import isna, DataFrame
@@ -15,7 +16,7 @@ from pandas import isna, DataFrame
 IGNORED_WORDS = ('census', 'estimates')
 
 ### --- FUNCTIONS --- ###
-def format_column_name(name: str, ignored_words = IGNORED_WORDS) -> str:
+def format_column_name(name: str, ignored_words: list[str] = IGNORED_WORDS, substitution_map: dict[str] = SUBSTITUTION_MAP) -> str:
     """
     Format a singular column name.
 
@@ -26,8 +27,18 @@ def format_column_name(name: str, ignored_words = IGNORED_WORDS) -> str:
     Returns:
         str: The formatted column name.
     """
+    formatted_list = []
+
     str_list = re.split(r'[\. ]+', name.lower())  # handle multiple delimiters
-    formatted_list = [word for word in str_list if word not in ignored_words]
+    for word in str_list:
+        if word in ignored_words:
+            continue
+
+        if word in substitution_map:
+            word = substitution_map[word]
+
+        formatted_list.append(word)
+
     return '_'.join(formatted_list).strip('_')
 
 def format_column_names(df: DataFrame, inplace: bool = False, flag_word: str = 'Unnamed') -> list:
