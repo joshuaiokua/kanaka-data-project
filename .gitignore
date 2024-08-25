@@ -161,8 +161,11 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# Peronal
+# Personal
 .vscode/
 pn.ipynb
 *local/
 uv.lock
+
+# Delete later
+src/dfstore.py
