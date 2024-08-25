@@ -24,11 +24,11 @@ This project respects the original work of organizations like the Office of Hawa
 
 ### Research Experiments
 Within this project's overarching goal, I will also explore several specific ideas, listed below, which help to guide development and, as such, are likely to change as the project progresses. See `experiments/README.md` for more information.
-- LLM question-answering over numerical datasets
-- Efficacy of vectorizing numerical data for LLMs
-- How to leverage LLMs to expand data interactivity
-- Fine-tuning requirements for LLMs to work with population data, which might not be expansive or else be biased
-- Easier ways to work with tabbed Excel files in Jupyter Notebook
+  - Question-Answering Over Numerical Datasets
+  - Vectorizing Numerical Data for LLMs
+  - Leveraging LLMs to Expand Data Interactivity
+  - Fine-Tuning LLMs for Population Data
+  - Working With Tabbed Excel Files
 
 ### **Working With Tabbed Excel Files**
 - **Methodology:** Many datasets, such as those provided in the Native Hawaiian Data Book 2023 (described in the [data](#data) section), are stored in tabbed Excel files, which present challenges for data manipulation. This project will investigate the best approaches for cleaning and unifying this data while preserving its original tabular structure and making it more compatible with modern data science tools.
