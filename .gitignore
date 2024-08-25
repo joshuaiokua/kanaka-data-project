@@ -166,6 +166,3 @@ cython_debug/
 pn.ipynb
 *local/
 uv.lock
-
-# Delete later
-src/dfstore.py
