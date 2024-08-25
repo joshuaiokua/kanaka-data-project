@@ -1,0 +1,45 @@
+[project]
+name = "kanaka-data-project"
+version = "0.0.0"
+description = "Data project exploring data on Kanaka Maoli"
+authors = [{name = "Joshua Iokua Albano"}]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas",
+    "requests",
+    "openpyxl",
+    "python-dotenv",
+    "langchain",
+    "qdrant-client[fastembed]",
+    "awshucks",
+]
+
+[project.optional-dependencies]
+openai = [
+    "openai",
+    "langchain-openai",
+]
+anthropic = [
+    "anthropic",
+    "langchain-anthropic",
+]
+groq = [
+    "groq",
+    "langchain-groq",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "ipykernel",
+]
+
+[tool.uv.sources]
+awshucks = { git = "https://github.com/joshuaiokua/awshucks.git", rev = "main" }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
