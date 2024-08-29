@@ -3,58 +3,53 @@ datacore/parsing.py
 
 Functionality for parsing data from various sources.
 
-TODO: 
-- Revisit consolidating the functions in this module.
-- Naming conventions for functions (i.e. is sheet the best term to use).
+TODO:
+- Revisit extensive use of **kwargs
+- Robust and customizable use of clean_string_with_patterns function
+- Functionality to parse specific types of metadata (e.g. annotations, commentary, source)
 
 Functions:
-- get_sheet_text: Retrieve text elements from a specific sheet in the DataFrame dictionary.
+- extract_metadata: Extract metadata from a DataFrame.
 """
 
-import re
-from pandas import DataFrame, notna
+# External Imports
+from pandas import DataFrame
+
+# Local Imports
+from src.utils import clean_string_with_patterns
 
 
 ### --- FUNCTIONS --- ###
-def get_sheet_text(
-    df_dict: dict[str, DataFrame],
-    sheet_name: str,
-    separator="\n",
-    drop_na: bool = True,
-    include_numbers: bool = False,
-    ignore_key_error: bool = False,
-) -> str:
+def extract_metadata(
+    df: DataFrame, column_idx: int = 0, remove_rows: bool = True, **kwargs
+) -> tuple[set[str], DataFrame]:
     """
-    Retrieves the text elements from a specific sheet in the DataFrame dictionary.
+    Extract metadata (e.g. annotations, commentary, source) from a DataFrame.
+    NOTE: Assumes that metadata rows have all NaN except in the specified column.
 
     Args:
-        df_dict (dict): A dictionary of DataFrames.
-        sheet_name (str): The name of the sheet to retrieve text from.
-        separator (str): The separator to use when joining text elements.
-        drop_na (bool): Whether to drop NaN values from the text.
-        include_numbers (bool): Whether to include numbers in the text.
-        ignore_key_error (bool): Whether to return an empty string if the specified sheet is not found.
+        df (pd.DataFrame): The DataFrame from which to extract metadata.
+        column_idx (int): The index of the column expected to contain non-NaN values in metadata rows.
+        remove_rows (bool): Whether to return the DataFrame with the metadata rows removed.
+        **kwargs: Additional keyword arguments.
 
     Returns:
-        str: The text elements from the specified sheet.
+        tuple[set[str], pd.DataFrame]: A set containing the extracted metadata and the DataFrame with metadata rows removed (if specified).
     """
-    if sheet_name not in df_dict:
-        if ignore_key_error:
-            return ""
-        raise KeyError(f'Sheet "{sheet_name}" not found in DataFrame dictionary.')
+    # Find rows where all NaN except specified column
+    mask = df.iloc[:, 1:].isna().all(axis=1)
 
-    # Drop NaN values if specified
-    content = (
-        df_dict[sheet_name].dropna().to_numpy().flatten()
-        if drop_na
-        else df_dict[sheet_name].to_numpy().flatten()
+    # Extract unique metadata values from specified column
+    metadata = set(
+        df.loc[mask, df.columns[column_idx]]
+        .dropna()
+        .str.strip()
+        .apply(
+            lambda x: clean_string_with_patterns(
+                x, "glottal_stop", "bullet", "newline", "non_breaking_space"
+            )
+        )
     )
 
-    # Filter out numbers if specified
-    if not include_numbers:
-        content = [item for item in content if isinstance(item, str)]
-    else:
-        content = [str(item) for item in content if notna(item)]
-
-    # Join the text elements using the specified separator
-    return separator.join(content).strip()
+    # Optionally remove metadata rows from original DataFrame
+    return metadata, df[~mask].reset_index(drop=True) if remove_rows else df

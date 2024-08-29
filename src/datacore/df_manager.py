@@ -32,6 +32,7 @@ from functools import cached_property
 
 # Local Imports
 from src.datacore.loaders import load_data_from_url
+from src.datacore.parsing import extract_metadata
 from src.utils import clean_string_with_patterns, extract_years_from_string
 
 
@@ -46,6 +47,7 @@ class DataFrameEntry:
     name: Optional[str] = None
     original_sheet_name: Optional[str] = None
     years_covered: Optional[list[int]] = field(default_factory=list)
+    metadata: Optional[dict] = field(default_factory=dict)
     last_modified: datetime = field(default_factory=datetime.now)
     tags: set = field(default_factory=set)  # (e.g. 'drop', 'cleaned', etc.)
 
@@ -64,16 +66,21 @@ class DataFrameEntry:
             f"    name='{self.name}',\n"
             f"    original_sheet_name='{self.original_sheet_name}',\n"
             f"    years_covered={self.years_covered},\n"
+            f"    metadata={self.metadata},\n"
             f"    last_modified={self.last_modified},\n"
             f"    tags={self.tags}\n"
             f")"
         )
 
     def __str__(self) -> str:
+    # Prepare metadata for printing
+        formatted_metadata = '\n    '.join(self.metadata) if self.metadata else 'None'
+        
         return (
             f"DataFrameEntry: {self.name}\n"
             f"  Original Sheet: {self.original_sheet_name}\n"
             f"  Years Covered: {self.years_covered}\n"
+            f"  Metadata: \n    {formatted_metadata}\n"
             f"  Last Modified: {self.last_modified}\n"
             f"  Tags: {', '.join(self.tags) if self.tags else 'None'}"
         )
@@ -139,14 +146,20 @@ class DataFrameManager(dict):
             raw_df_dict.pop(titles_sheet_name, None)
 
         for key, df in raw_df_dict.items():
+            
             table_name = table_names.get(key)
+            metadata, df = extract_metadata(
+                df.dropna(how="all").reset_index(drop=True), **kwargs
+            )
+            
             df_entry = DataFrameEntry(
-                dataframe=df.dropna(how="all").reset_index(drop=True),
+                dataframe=df,
                 name=table_name,
                 original_sheet_name=key,
                 years_covered=(
                     extract_years_from_string(table_name) if table_name else []
                 ),
+                metadata=metadata,
             )
 
             # Clean up the key if following "00.00" format
