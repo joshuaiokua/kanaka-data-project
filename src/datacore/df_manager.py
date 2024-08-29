@@ -48,9 +48,6 @@ class DataFrameEntry:
     original_sheet_name: Optional[str] = None
     last_modified: datetime = field(default_factory=datetime.now)
     tags: set = field(default_factory=set)  # (e.g. 'drop', 'cleaned', etc.)
-
-    def __call__(self) -> pd.DataFrame:
-        return self.dataframe
     
     def _repr_html_(self) -> str:
         """
