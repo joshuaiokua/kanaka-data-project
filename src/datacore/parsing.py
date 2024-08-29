@@ -58,35 +58,3 @@ def get_sheet_text(
 
     # Join the text elements using the specified separator
     return separator.join(content).strip()
-
-
-def get_sheet_titles(df_dict: dict) -> DataFrame:
-    """
-    Extract the titles of each sheet in the DataFrame dictionary.
-
-    Args:
-        df_dict (dict): A dictionary of DataFrames.
-
-    Returns:
-        pd.DataFrame: A DataFrame containing the sheet titles.
-    """
-    try:
-        title_pairs = df_dict["Titles"].dropna().values.tolist()
-    except KeyError as exc:
-        raise KeyError(
-            "The 'Titles' sheet is missing from the DataFrame dictionary."
-        ) from exc
-
-    table_name_pairs = []
-
-    while title_pairs:
-        table, title = title_pairs.pop(0)
-        if "Table" in table and table != "Table":
-            table_name_pairs.append(
-                (
-                    "0" + table.split(" ")[-1],
-                    re.sub(r"Hawaiÿi|Hawai'i", "Hawaii", title),
-                )
-            )
-
-    return table_name_pairs
