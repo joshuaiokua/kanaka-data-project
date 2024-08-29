@@ -16,7 +16,7 @@ SUBSTITUTION_MAP = {
 }
 
 PATTERN_MAP = {
-    "glottal": (compile(r"iÿi|i'i|i\u2018i"), "ii"),
+    "glottal_stop": (compile(r"iÿi|i'i|i\u2018i"), "ii"),
     "whitespace": (compile(r"[\. ]+"), "_"),
     "bullet": (compile(r"^[\s]*[\*\•\-]{1,2}\s*"), ""),
 }
