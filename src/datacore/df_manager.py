@@ -1,5 +1,5 @@
 """
-data_processing/df_manager.py
+datacore/df_manager.py
 
 Module for managing separate DataFrame objects that originate, or are somehow related to, the same data source (e.g. a single Excel file with multiple sheets).
 
@@ -19,7 +19,7 @@ import re
 import pandas as pd
 
 # Local Imports
-from src.data_processing.loaders import load_data_from_url
+from src.datacore.loaders import load_data_from_url
 from src.constants.mappings import PATTERN_MAP
 
 

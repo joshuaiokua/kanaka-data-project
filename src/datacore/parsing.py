@@ -1,5 +1,5 @@
 """
-data_processing/parsing.py
+datacore/parsing.py
 
 Functionality for parsing data from various sources.
 

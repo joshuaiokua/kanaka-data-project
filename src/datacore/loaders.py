@@ -1,5 +1,5 @@
 """
-data_processing/loaders.py
+datacore/loaders.py
 
 Functionality for loading data from various sources.
 
