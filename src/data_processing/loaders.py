@@ -12,27 +12,26 @@ Functions:
 """
 
 import json
-import requests
 from io import BytesIO
 
+import requests
+
+
 ### --- FUNCTIONS --- ###
-def load_json(file_path: str) -> dict:
+def load_json(file_path: str, encoding: str = "utf-8") -> dict:
     """
     Load a JSON file into a dictionary.
 
     Args:
         file_path (str): The path to the JSON file.
+        encoding (str): The encoding of the file.
 
     Returns:
         dict: The JSON data as a dictionary.
     """
-    try:
-        with open(file_path, 'r') as file:
-            return json.loads(file.read())
-    except FileNotFoundError:
-        raise FileNotFoundError(f'File not found: {file_path}')
-    except json.JSONDecodeError:
-        raise ValueError(f'Invalid JSON file: {file_path}')
+    with open(file_path, encoding=encoding, mode="r") as file:
+        return json.loads(file.read())
+
 
 def load_data_from_url(url: str, timeout: int = 10) -> BytesIO:
     """
@@ -45,12 +44,6 @@ def load_data_from_url(url: str, timeout: int = 10) -> BytesIO:
     Returns:
         BytesIO: The retrieved data as a BytesIO object.
     """
-    try:
-        response = requests.get(url, timeout=timeout)
-        response.raise_for_status()
-        return BytesIO(response.content)
-    except requests.exceptions.HTTPError as e:
-        raise requests.exceptions.HTTPError(f"HTTP error occurred: {e.response.status_code} {e.response.reason}") from e
-    except requests.exceptions.RequestException as e:
-        raise requests.exceptions.RequestException(f'Error loading data from URL: {e}')
-
+    response = requests.get(url, timeout=timeout)
+    response.raise_for_status()
+    return BytesIO(response.content)
