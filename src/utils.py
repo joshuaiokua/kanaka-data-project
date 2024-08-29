@@ -6,6 +6,7 @@ Utility functions for cleaning strings and other miscellaneous tasks.
 Functions:
 - apply_string_cleaning_patterns: Clean a string with a series of regex and replacements.
 - clean_string_with_patterns: Clean a string with patterns from PATTERN_MAP.
+- extract_years_from_string: Extract all years from a string.
 """
 
 # External Imports
@@ -56,3 +57,35 @@ def clean_string_with_patterns(string: str, *pattern_keys: str) -> str:
         string = apply_string_cleaning_patterns(string, (pattern, replacement))
 
     return string
+
+
+def extract_years_from_string(title: str) -> list:
+    """
+    Extracts all years from a string for formats listed below:
+    - Single year: "Title 2006"
+    - Year range: "Title: 2006-2010"
+    - Mixed: "Title 2006, 2008-2010, 2012"
+
+    Args:
+        title (str): The title string containing years or ranges of years.
+
+    Returns:
+        list: A list of all years that could be extracted from the title, including all years in any ranges.
+    """
+    # Regex to find all year ranges (e.g., 2006-2010) or single years
+    year_ranges = re.findall(r"(\d{4})\s*-\s*(\d{4})|\b(\d{4})\b", title)
+
+    if not year_ranges:
+        return []
+
+    years = set()
+
+    for year_range in year_ranges:
+        if year_range[0] and year_range[1]:  # If range of years
+            start_year = int(year_range[0])
+            end_year = int(year_range[1])
+            years.update(range(start_year, end_year + 1))
+        elif year_range[2]:  # If single year
+            years.add(int(year_range[2]))
+
+    return sorted(years)
