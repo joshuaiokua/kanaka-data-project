@@ -3,6 +3,9 @@ datacore/formatting.py
 
 Functionality for formatting data, as distinct from transforming it. That is, this module is for changing the format the data might presented in or organized (e.g. column names), but not the data itself.
 
+TODO:
+- Revisit formatting given changes to string cleaning functions (i.e. use of SUBSTITUTION_MAP).
+
 Functions:
 - format_column_name: Format a singular column name.
 - format_column_names: Format a list of column names.

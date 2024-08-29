@@ -51,10 +51,8 @@ def clean_string_with_patterns(string: str, *pattern_keys: str) -> str:
         if pattern_key not in PATTERN_MAP:
             raise KeyError(f"Pattern key '{pattern_key}' not found in PATTERN_MAP.")
 
-        # Retrieve the single pattern-replacement tuple
+        # Retrieve the pattern-replacement tuple and apply it
         pattern, replacement = PATTERN_MAP[pattern_key]
-
-        # Apply the pattern using the existing function
         string = apply_string_cleaning_patterns(string, (pattern, replacement))
 
     return string
