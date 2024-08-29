@@ -51,7 +51,15 @@ class DataFrameEntry:
 
     def __call__(self) -> pd.DataFrame:
         return self.dataframe
-
+    
+    def _repr_html_(self) -> str:
+        """
+        Return an HTML representation of the DataFrameEntry object without the need to call to dataframe attribute.
+        """
+        if self.dataframe is not None:
+            return self.dataframe._repr_html_()
+        else:
+            return "<i>Empty DataFrameEntry</i>"
 
 class DataFrameManager:
     def __init__(self, source_url: str = None):
