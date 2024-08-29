@@ -12,7 +12,7 @@ dependencies = [
     "python-dotenv",
     "langchain",
     "qdrant-client[fastembed]",
-    "awshucks",
+    "cloudbozo",
 ]
 
 [project.optional-dependencies]
@@ -39,7 +39,7 @@ dev-dependencies = [
 ]
 
 [tool.uv.sources]
-awshucks = { git = "https://github.com/joshuaiokua/awshucks.git", rev = "main" }
+cloudbozo = { git = "https://github.com/joshuaiokua/cloudbozo.git", rev = "main" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
