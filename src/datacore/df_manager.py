@@ -5,87 +5,31 @@ Module for managing separate DataFrame objects that originate, or are somehow re
 
 TODO:
 - Revisit extensive use of **kwargs
-- Functionality to consolidate __str__ and __repr__ methods for DataFrameEntry
 - Summary information functionality of entries for the DataFrameManager class
 - Implement a method to drop DataFrames from the DataFrameManager
 - Implement a method to clean DataFrames in the DataFrameManager
-- Implement 
-- Source/Comment extraction functionality for DataFrameEntry objects, implemented in the DataFrameManager class
 - Loading from file path
 - Loading from multiple URLs
 - "Smart" recognition of DataFrameManager source (e.g. URL, file path, etc.) and source type (e.g. Excel, CSV, etc.)
 
 
-Classes:
-- DataFrameEntry
-- DataFrameManager
+Class Method Overview:
+- 
 """
 
 # External Imports
-from dataclasses import dataclass, field
-from datetime import datetime
-from typing import Optional
-
 import re
 import pandas as pd
 from functools import cached_property
 
 # Local Imports
+from src.datacore.df_entry import DataFrameEntry
 from src.datacore.loaders import load_data_from_url
 from src.datacore.parsing import extract_metadata
 from src.utils import clean_string_with_patterns, extract_years_from_string
 
 
 ### --- CLASSES --- ###
-@dataclass
-class DataFrameEntry:
-    """
-    Dataclass for storing a DataFrame object along with metadata.
-    """
-
-    dataframe: pd.DataFrame
-    name: Optional[str] = None
-    original_sheet_name: Optional[str] = None
-    years_covered: Optional[list[int]] = field(default_factory=list)
-    metadata: Optional[dict] = field(default_factory=dict)
-    last_modified: datetime = field(default_factory=datetime.now)
-    tags: set = field(default_factory=set)  # (e.g. 'drop', 'cleaned', etc.)
-
-    def _repr_html_(self) -> str:
-        """
-        Return an HTML representation of the DataFrameEntry object without the need to call to dataframe attribute.
-        """
-        if self.dataframe is not None:
-            return self.dataframe._repr_html_()
-        else:
-            return "<i>Empty DataFrameEntry</i>"
-
-    def __repr__(self) -> str:
-        return (
-            f"DataFrameEntry(\n"
-            f"    name='{self.name}',\n"
-            f"    original_sheet_name='{self.original_sheet_name}',\n"
-            f"    years_covered={self.years_covered},\n"
-            f"    metadata={self.metadata},\n"
-            f"    last_modified={self.last_modified},\n"
-            f"    tags={self.tags}\n"
-            f")"
-        )
-
-    def __str__(self) -> str:
-    # Prepare metadata for printing
-        formatted_metadata = '\n    '.join(self.metadata) if self.metadata else 'None'
-        
-        return (
-            f"DataFrameEntry: {self.name}\n"
-            f"  Original Sheet: {self.original_sheet_name}\n"
-            f"  Years Covered: {self.years_covered}\n"
-            f"  Metadata: \n    {formatted_metadata}\n"
-            f"  Last Modified: {self.last_modified}\n"
-            f"  Tags: {', '.join(self.tags) if self.tags else 'None'}"
-        )
-
-
 class DataFrameManager(dict):
     """
     DataFrameManager class for managing multiple DataFrame objects that originate, or are somehow related to, the same data source (e.g. a single Excel file with multiple sheets). Inherits from dict.
