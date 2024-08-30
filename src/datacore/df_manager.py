@@ -18,6 +18,7 @@ Class Method Overview:
 """
 
 # External Imports
+from calendar import c
 import re
 import pandas as pd
 from functools import cached_property
@@ -26,6 +27,8 @@ from functools import cached_property
 from src.datacore.df_entry import DataFrameEntry
 from src.datacore.loaders import load_data_from_url
 from src.datacore.parsing import extract_metadata
+
+from src.constants.mappings import THEME_MAP
 from src.utils import clean_string_with_patterns, extract_years_from_string
 
 
@@ -74,28 +77,35 @@ class DataFrameManager(dict):
             )
 
         # Load dataframes, lowercasing the keys
-        raw_df_dict = {
-            key.lower(): value
-            for key, value in pd.read_excel(
-                pd.ExcelFile(load_data_from_url(source_url)), sheet_name=None
-            ).items()
-        }
+        raw_df_dict = pd.read_excel(
+            pd.ExcelFile(load_data_from_url(source_url)), sheet_name=None
+        )
 
         # Extract table names given kwarg or 'title(s)' as titles_sheet_name
         titles_sheet_name = self.find_titles_sheet_name(raw_df_dict.keys(), **kwargs)
-        table_names = self.extract_table_names(raw_df_dict, titles_sheet_name, **kwargs)
+        table_names_and_themes = self.extract_table_names(
+            raw_df_dict, titles_sheet_name, **kwargs
+        )
 
         # Drop the titles sheet if specified
         if kwargs.get("drop_title_sheet", False) and titles_sheet_name:
             raw_df_dict.pop(titles_sheet_name, None)
 
+
+        print(table_names_and_themes)
+        
         for key, df in raw_df_dict.items():
-            
-            table_name = table_names.get(key)
+            print(key)
+            if key not in table_names_and_themes:
+                print(type(key))
+                print(table_names_and_themes.keys())
+                print(table_names_and_themes[key])
+            table_info = table_names_and_themes[key]
+            table_name, table_theme = table_info["name"], table_info["theme"]
             metadata, df = extract_metadata(
                 df.dropna(how="all").reset_index(drop=True), **kwargs
             )
-            
+
             df_entry = DataFrameEntry(
                 dataframe=df,
                 name=table_name,
@@ -104,6 +114,7 @@ class DataFrameManager(dict):
                     extract_years_from_string(table_name) if table_name else []
                 ),
                 metadata=metadata,
+                tags={table_theme} if table_theme else set(),
             )
 
             # Clean up the key if following "00.00" format
@@ -127,6 +138,7 @@ class DataFrameManager(dict):
             title_cleaning_patterns (list[str]): A list of patterns mapped to PATTERN_MAP in constants/mappings.py.
             **kwargs: Additional keyword arguments.
                 - title_cleaning_patterns (list[str]): A list of patterns mapped to PATTERN_MAP in constants/mappings.py.
+                - title_sheet_type (str): The type of sheet containing the table names.
 
         Returns:
             dict[str, str]: A dictionary of sheet names and their corresponding titles.
@@ -136,35 +148,69 @@ class DataFrameManager(dict):
         """
 
         # Define helper function to allow for vectorization
-        def process_titles_row(row):
-            cleaning_patterns = (
-                kwargs.get("title_cleaning_patterns") or title_cleaning_patterns
-            )
-
+        def process_titles_row(row, cleaning_patterns, sheet_type):
             table = row.iloc[0]
-            table_name = row.iloc[1]  # Assuming table name is in next column
+            table_name = row.iloc[1]
 
-            if "Table" in table and table != "Table":
-                table = "0" + table.split(" ")[-1]
+            # Handle normal title sheets
+            if sheet_type == "normal":
+                if "Table" in table and table != "Table":
+                    table = "0" + table.split(" ")[-1]
+                    if cleaning_patterns:
+                        table_name = clean_string_with_patterns(
+                            table_name, *cleaning_patterns
+                        )
+                    return pd.Series([table, None, table_name])
+
+                elif "Introduction" in table:
+                    return pd.Series(["Introduction", None, table_name])
+
+                return pd.Series([None, None, None])
+
+            # Handle wiki-style title sheets
+            elif sheet_type == "wiki":
+                theme_code = (
+                    re.match(r"^[A-Z]+", table).group()
+                    if re.match(r"^[A-Z]+", table)
+                    else None
+                )
+                theme = THEME_MAP.get(theme_code, None)
+
+                # Clean the table name if patterns are provided
                 if cleaning_patterns:
                     table_name = clean_string_with_patterns(
                         table_name, *cleaning_patterns
                     )
-                return pd.Series([table, table_name])
-            return pd.Series([None, None])
 
-        if not titles_sheet_name or df_dict.get(titles_sheet_name) is None:
-            raise KeyError("Title sheet name not found in the DataFrame dictionary.")
+                if "Introduction" in table:
+                    table = "Introduction"
+                else:
+                    table = clean_string_with_patterns(table, "hyphens")
 
-        title_df = df_dict[titles_sheet_name].dropna(how="all")
-        table_rows = title_df[title_df.iloc[:, 0].str.contains("Table", na=False)]
+                return pd.Series([table, theme, table_name])
+
+            # Return None if sheet type is unrecognized
+            return pd.Series([None, None, None])
+
+        # Extract table names from the titles sheet
+        title_cleaning_patterns = kwargs.get("title_cleaning_patterns")
+        title_sheet_type = kwargs.get("title_sheet_type", "normal")
+
+        title_df = df_dict[titles_sheet_name].dropna()
+        table_rows = title_df.iloc[
+            title_df.iloc[:, 0].str.contains("Table", na=False).idxmax() - 2 :
+        ]
 
         return (
-            table_rows.apply(process_titles_row, axis=1)
-            .dropna()
+            table_rows.apply(
+                process_titles_row,
+                axis=1,
+                cleaning_patterns=title_cleaning_patterns,
+                sheet_type=title_sheet_type,
+            )
             .set_index(0)
-            .squeeze()
-            .to_dict()
+            .rename(columns={1: "theme", 2: "name"})
+            .to_dict(orient="index")
         )
 
     @staticmethod
@@ -187,6 +233,8 @@ class DataFrameManager(dict):
         """
         Find the title sheet name from a list of DataFrame dictionary keys or a specified keyword argument.
 
+        NOTE: Assumes that title sheet is not case-sensitive. Need to revisit this assumption in the future.
+
         Args:
             df_dict_keys (list[str]): A list of keys from the DataFrame dictionary.
             **kwargs: Additional keyword arguments.
@@ -200,7 +248,7 @@ class DataFrameManager(dict):
 
         # Check for 'titles' or 'title' in the keys
         for key in df_dict_keys:
-            if "titles" in key or "title" in key:
+            if "Titles" in key or "Title" in key:
                 return key
 
         raise KeyError("Title sheet name not found in the DataFrame dictionary.")
