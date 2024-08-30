@@ -9,6 +9,7 @@ TODO:
 Mappings:
 - SUBSTITUTION_MAP: A dictionary mapping words or symbols to their substitutions.
 - PATTERN_MAP: A dictionary mapping keys to regular expressions and their corresponding replacements.
+- THEME_MAP: A dictionary mapping theme abbreviations to their full names.
 """
 
 from re import compile
@@ -23,4 +24,15 @@ PATTERN_MAP = {
     "bullet": (compile(r"^[\s]*[\*\•\-]{1,2}\s*"), ""),
     "newline": (compile(r"\n"), "; "),
     "non_breaking_space": (compile(r"\xa0+"), " "),
+    "hyphens": (compile(r"[\u2011‑]"), "-"),
+}
+
+THEME_MAP = {
+    "POP": "Population",
+    "INC": "Income",
+    "HOU": "Housing",
+    "EMP": "Employment",
+    "LND": "Environment",
+    "HTH": "Health",
+    "EDU": "Education",
 }
