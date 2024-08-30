@@ -54,7 +54,17 @@ class DataFrameEntry:
 
     def __str__(self) -> str:
         # Prepare metadata for printing
-        formatted_metadata = "\n    ".join(self.metadata) if self.metadata else "None"
+        if self.metadata:
+            formatted_metadata = []
+            for key, value in self.metadata.items():
+                if isinstance(value, list):
+                    formatted_items = "\n      - ".join(value)
+                    formatted_metadata.append(f"{key.capitalize()}:\n      - {formatted_items}")
+                else:
+                    formatted_metadata.append(f"{key.capitalize()}: {value}")
+            formatted_metadata = "\n    ".join(formatted_metadata)
+        else:
+            formatted_metadata = "None"
 
         return (
             f"DataFrameEntry: {self.name}\n"
@@ -64,3 +74,9 @@ class DataFrameEntry:
             f"  Last Modified: {self.last_modified}\n"
             f"  Tags: {', '.join(self.tags) if self.tags else 'None'}"
         )
+        
+    def info(self) -> None:
+        """
+        Print the DataFrameEntry object in a human-readable format.
+        """
+        print(self)
