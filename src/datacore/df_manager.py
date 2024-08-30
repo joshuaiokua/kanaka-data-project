@@ -29,7 +29,7 @@ from src.datacore.loaders import load_data_from_url
 from src.datacore.parsing import extract_metadata
 
 from src.constants.mappings import THEME_MAP
-from src.utils import clean_string_with_patterns, extract_years_from_string
+from src.utils import clean_string_with_named_patterns, extract_years_from_string
 
 
 ### --- CLASSES --- ###
@@ -157,7 +157,7 @@ class DataFrameManager(dict):
                 if "Table" in table and table != "Table":
                     table = "0" + table.split(" ")[-1]
                     if cleaning_patterns:
-                        table_name = clean_string_with_patterns(
+                        table_name = clean_string_with_named_patterns(
                             table_name, *cleaning_patterns
                         )
                     return pd.Series([table, None, table_name])
@@ -178,14 +178,14 @@ class DataFrameManager(dict):
 
                 # Clean the table name if patterns are provided
                 if cleaning_patterns:
-                    table_name = clean_string_with_patterns(
+                    table_name = clean_string_with_named_patterns(
                         table_name, *cleaning_patterns
                     )
 
                 if "Introduction" in table:
                     table = "Introduction"
                 else:
-                    table = clean_string_with_patterns(table, "hyphens")
+                    table = clean_string_with_named_patterns(table, "hyphens")
 
                 return pd.Series([table, theme, table_name])
 

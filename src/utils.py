@@ -5,7 +5,7 @@ Utility functions for cleaning strings and other miscellaneous tasks.
 
 Functions:
 - apply_string_cleaning_patterns: Clean a string with a series of regex and replacements.
-- clean_string_with_patterns: Clean a string with patterns from PATTERN_MAP.
+- clean_string_with_named_patterns: Clean a string with patterns from PATTERN_MAP.
 - extract_years_from_string: Extract all years from a string.
 """
 
@@ -34,9 +34,9 @@ def apply_string_cleaning_patterns(string: str, *patterns: tuple[Pattern, str]) 
     return string
 
 
-def clean_string_with_patterns(string: str, *pattern_keys: str) -> str:
+def clean_string_with_named_patterns(string: str, *pattern_keys: str) -> str:
     """
-    Clean a string using a set of predefined patterns from the PATTERN_MAP.
+    Clean a string using a set of predefined named patterns that act as keys to retrieve regex and replacement pairs from PATTERN_MAP.
 
     Args:
         string (str): The string to clean.
