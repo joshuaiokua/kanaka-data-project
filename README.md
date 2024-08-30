@@ -12,6 +12,7 @@ This project uses Llama 3.1, AWS, and Streamlit to centralize, clean, and visual
   - [Usage](#usage)
 - [**Tools**](#tools)
   - [Llama 3.1](#llama-31)
+  - [LangChain](#langchain)
   - [AWS](#aws-free-tier)
   - [CockroachDB](#cockroachdb)
   - [Qdrant](#qdrant)
@@ -57,6 +58,9 @@ Meta's newest LLM, Llama 3.1, is the primary LLM used in this project. Other mod
 - Meta-Llama-3.1-8B-Instruct
 - Meta-Llama-3.1-70B-Instruct
 
+### [LangChain](https://langchain.com/)
+LangChain is a framework designed to simplify the development, productionization, and deployment of applications powered by large language models (LLMs). This project will use LangChain to streamline the integration of LLMs into the data exploration and visualization application, making it easier to leverage the capabilities of these models in real-time interactions with users.
+
 ### [AWS](https://aws.amazon.com/) (Free Tier)
 
 Cloud data and model training and provision, where needed, is provided by AWS. I'm using the free tier services and any free trials they offer because I am poor :sob:. I fully understand that AWS offers better products to accomplish what I intend but alas. Listed below are the specific AWS services to be used in this project:
@@ -77,7 +81,7 @@ CockroachDB is a distributed SQL database that provides consistency, scalability
 
 ### [Qdrant](https://qdrant.com/)
 
-Qdrant is an open-source vector search engine that allows for the efficient storage and retrieval of high-dimensional vectors. This project will use Qdrant to store and manage the vectorized data (e.g. contextual information separate from the datasets themselves), making it easier to work with LLMs and other machine learning models.
+Qdrant is an open-source vector search engine that allows for the efficient storage and retrieval of high-dimensional vectors. This project will use Qdrant to store and manage the vectorized data (e.g. contextual information separate from the datasets themselves), making it easier to work with LLMs and other machine learning models. Qdrant is also already integrated into the LangChain framework, simplifying the process of working with vectorized data in the application.
 
 ### [Streamlit](https://streamlit.io/)
 
