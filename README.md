@@ -93,7 +93,6 @@ See the `README.md` file in the `data` folder for more information on the data u
 - **Format**: Tabbed Excel file, with each tab representing a different dataset.
 - **Ownership**: The Native Hawaiian Data Book is published by the Office of Hawaiian Affairs (OHA), a public agency that serves as a resource for Native Hawaiians. The data book is compiled by the Research Division of OHA.
 
-
 [^bignote2]: I do not want to take away from the incredible work done by a variety of organizations, specifically the Office of Hawaiian Affairs, and individuals to collect and present the data as I found it. My inclusion of any data source in this project is not criticism of the organization or individual that collected the data. Rather, it is an attempt to make the data more accessible and engaging for a wider audience. If anything I hope that this project will encourage more people to explore the original data sources more and show these organizations and individuals the value of their work and what can be done with it.
 
 [^bignote3]: AWS offers a 2-month free trial for SageMaker, which I may use to fine-tune models and or deploy them. I want to wait until I have everything else organized across all my projects that could make use of this service before I start the trial, however. I may continue using SageMaker after the trial if it proves useful given the pricing for serverless inference is quite reasonable.
