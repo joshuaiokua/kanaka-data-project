@@ -11,6 +11,7 @@ _OHA_DB_BASE = f"{_OHA_BASE}CHAP%200"
 
 ### --- DATA SOURCE MAPS --- ###
 OHA_DATA_BOOK = {
+    "wiki": f"{_OHA_DB_BASE}0%20Wiki%20Data.23.xlsx",
     "population": f"{_OHA_DB_BASE}1%20Population.23.xlsx",
     "housing": f"{_OHA_DB_BASE}2%20Housing.23.xlsx",
     "labor": f"{_OHA_DB_BASE}3%20Labor%20and%20Employment.23.xlsx",

@@ -5,7 +5,7 @@ Functionality for parsing data from various sources.
 
 TODO:
 - Revisit extensive use of **kwargs
-- Robust and customizable use of clean_string_with_patterns function
+- Robust and customizable use of clean_string_with_named_patterns function
 - Functionality to parse specific types of metadata (e.g. annotations, commentary, source)
 
 Functions:
@@ -16,7 +16,7 @@ Functions:
 from pandas import DataFrame
 
 # Local Imports
-from src.utils import clean_string_with_patterns
+from src.utils import clean_string_with_named_patterns
 
 
 ### --- FUNCTIONS --- ###
@@ -45,7 +45,7 @@ def extract_metadata(
         .dropna()
         .str.strip()
         .apply(
-            lambda x: clean_string_with_patterns(
+            lambda x: clean_string_with_named_patterns(
                 x, "glottal_stop", "bullet", "newline", "non_breaking_space"
             )
         )
