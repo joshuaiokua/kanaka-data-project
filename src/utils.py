@@ -70,22 +70,22 @@ def extract_years_from_string(title: str) -> list:
         title (str): The title string containing years or ranges of years.
 
     Returns:
-        list: A list of all years that could be extracted from the title, including all years in any ranges.
+        list: A list of all years and year ranges (as tuples) that could be extracted from the title.
     """
-    # Regex to find all year ranges (e.g., 2006-2010) or single years
-    year_ranges = re.findall(r"(\d{4})\s*-\s*(\d{4})|\b(\d{4})\b", title)
+    # Regex to find all single years and year ranges, standardizing hyphens first
+    year_matches = re.findall(
+        r"(\d{4})\s*-\s*(\d{4})|\b(\d{4})\b",
+        clean_string_with_named_patterns(title, "hyphens"),
+    )
 
-    if not year_ranges:
-        return []
+    years = []
 
-    years = set()
+    for match in year_matches:
+        if match[0] and match[1]:  # If a range of years is matched
+            start_year = int(match[0])
+            end_year = int(match[1])
+            years.append((start_year, end_year))  # Capture the range as a tuple
+        elif match[2]:  # If a single year is matched
+            years.append(int(match[2]))
 
-    for year_range in year_ranges:
-        if year_range[0] and year_range[1]:  # If range of years
-            start_year = int(year_range[0])
-            end_year = int(year_range[1])
-            years.update(range(start_year, end_year + 1))
-        elif year_range[2]:  # If single year
-            years.add(int(year_range[2]))
-
-    return sorted(years)
+    return years
