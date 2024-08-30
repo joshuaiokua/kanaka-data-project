@@ -59,7 +59,9 @@ class DataFrameEntry:
             for key, value in self.metadata.items():
                 if isinstance(value, list):
                     formatted_items = "\n      - ".join(value)
-                    formatted_metadata.append(f"{key.capitalize()}:\n      - {formatted_items}")
+                    formatted_metadata.append(
+                        f"{key.capitalize()}:\n      - {formatted_items}"
+                    )
                 else:
                     formatted_metadata.append(f"{key.capitalize()}: {value}")
             formatted_metadata = "\n    ".join(formatted_metadata)
@@ -74,7 +76,7 @@ class DataFrameEntry:
             f"  Last Modified: {self.last_modified}\n"
             f"  Tags: {', '.join(self.tags) if self.tags else 'None'}"
         )
-        
+
     def info(self) -> None:
         """
         Print the DataFrameEntry object in a human-readable format.
