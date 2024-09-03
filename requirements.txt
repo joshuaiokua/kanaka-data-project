@@ -27,7 +27,7 @@ certifi==2024.7.4
     #   requests
 charset-normalizer==3.3.2
     # via requests
-cloudbozo @ git+https://github.com/joshuaiokua/cloudbozo.git@abb16bd9cec53845c61489d42e16bf86ab49ba81
+cloudbozo @ git+https://github.com/joshuaiokua/cloudbozo@86998eb5bbdeb202e86117aa584d1d71a10482de
     # via kanaka-data-project (pyproject.toml)
 coloredlogs==15.0.1
     # via onnxruntime

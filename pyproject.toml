@@ -39,7 +39,7 @@ dev-dependencies = [
 ]
 
 [tool.uv.sources]
-cloudbozo = { git = "https://github.com/joshuaiokua/cloudbozo.git" }
+cloudbozo = { git = "https://github.com/joshuaiokua/cloudbozo" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
