@@ -15,7 +15,7 @@ TODO:
 
 
 Class Method Overview:
-- 
+- from_url(cls, source_url: str, **kwargs) -> "DataFrameManager": Create a DataFrameManager instance from a URL.
 """
 
 # External Imports

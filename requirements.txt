@@ -10,6 +10,8 @@ annotated-types==0.7.0
     # via pydantic
 anyio==4.4.0
     # via httpx
+asyncpg==0.29.0
+    # via cloudbozo
 attrs==24.2.0
     # via aiohttp
 boto3==1.35.5
@@ -25,7 +27,7 @@ certifi==2024.7.4
     #   requests
 charset-normalizer==3.3.2
     # via requests
-cloudbozo @ git+https://github.com/joshuaiokua/cloudbozo.git@959d24abc7bea067ce13f33a1814596436245ab3
+cloudbozo @ git+https://github.com/joshuaiokua/cloudbozo@86998eb5bbdeb202e86117aa584d1d71a10482de
     # via kanaka-data-project (pyproject.toml)
 coloredlogs==15.0.1
     # via onnxruntime
@@ -139,8 +141,6 @@ protobuf==5.27.4
     #   grpcio-tools
     #   onnx
     #   onnxruntime
-psycopg2-binary==2.9.9
-    # via cloudbozo
 pydantic==2.8.2
     # via
     #   langchain
@@ -167,7 +167,9 @@ pyyaml==6.0.2
     #   langchain
     #   langchain-core
 qdrant-client==1.11.1
-    # via kanaka-data-project (pyproject.toml)
+    # via
+    #   kanaka-data-project (pyproject.toml)
+    #   cloudbozo
 requests==2.32.3
     # via
     #   kanaka-data-project (pyproject.toml)
