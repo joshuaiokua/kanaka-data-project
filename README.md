@@ -51,7 +51,7 @@ Within this project's overarching goal, I will also explore several specific ide
 
 ### [Llama 3.1](https://llama.meta.com/)
 
-Meta's newest LLM, Llama 3.1, is the primary LLM used in this project. Other models may be explored in the future. The specific models used and explored in this project are listed below:
+Meta's newest LLM, Llama 3.1, is the primary LLM used in this project. Other models may be explored in the future. The specific models used and explored in this project are listed below, all of which are serviced by Groq.
 
 - Meta-Llama-3.1-8B
 - Meta-Llama-3.1-70B
@@ -59,6 +59,7 @@ Meta's newest LLM, Llama 3.1, is the primary LLM used in this project. Other mod
 - Meta-Llama-3.1-70B-Instruct
 
 ### [LangChain](https://langchain.com/)
+
 LangChain is a framework designed to simplify the development, productionization, and deployment of applications powered by large language models (LLMs). This project will use LangChain to streamline the integration of LLMs into the data exploration and visualization application, making it easier to leverage the capabilities of these models in real-time interactions with users.
 
 ### [AWS](https://aws.amazon.com/) (Free Tier)
