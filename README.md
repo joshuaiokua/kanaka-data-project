@@ -71,7 +71,6 @@ Cloud data and model training and provision, where needed, is provided by AWS. I
   - **Note**: Functionality has already been implemented to interact with S3 but this may be revisited as the project progresses and other cloud services (e.g. Qdrant, CockroachDB) are explored and/or integrated.
 - **Lambda**
   - **Purpose**: Simple serverless compute for base data processing.
-- (TBD) DynamoDB or RDS
 - (TBD) SageMaker[^bignote3]
 
 > **Note:** As I have a few separate projects that interact with AWS and other cloud services, I've centralized all code I've written for working with cloud services in a single repository listed in the `pyproject.toml` file as `cloudbozo`. As of now (8/24), the repository is private, but I may make it public in the future if only for the sake of transparency. I can assure you that the code is not particularly interesting and simply caters to my idiosyncrasies.
