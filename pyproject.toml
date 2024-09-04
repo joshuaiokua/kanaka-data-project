@@ -36,10 +36,11 @@ build-backend = "hatchling.build"
 [tool.uv]
 dev-dependencies = [
     "ipykernel",
+    "ipywidgets",
 ]
 
 [tool.uv.sources]
-cloudbozo = { git = "https://github.com/joshuaiokua/cloudbozo" }
+cloudbozo = { git = "https://github.com/joshuaiokua/cloudbozo", branch = "iteration-v2-initial-updates" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
