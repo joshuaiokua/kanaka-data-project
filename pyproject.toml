@@ -36,6 +36,7 @@ build-backend = "hatchling.build"
 [tool.uv]
 dev-dependencies = [
     "ipykernel",
+    "ipywidgets",
 ]
 
 [tool.uv.sources]
