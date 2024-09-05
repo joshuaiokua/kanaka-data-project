@@ -20,16 +20,17 @@ Class Method Overview:
 
 # External Imports
 import re
-import pandas as pd
-from functools import cached_property
 from collections import defaultdict
+from functools import cached_property
+
+import pandas as pd
+
+from src.constants.mappings import THEME_MAP
 
 # Local Imports
 from src.datacore.df_entry import DataFrameEntry
 from src.datacore.loaders import load_data_from_url
 from src.datacore.parsing import extract_metadata
-
-from src.constants.mappings import THEME_MAP
 from src.utils import clean_string_with_named_patterns, extract_years_from_string
 
 
@@ -39,7 +40,10 @@ class DataFrameManager(dict):
     DataFrameManager class for managing multiple DataFrame objects that originate, or are somehow related to, the same data source (e.g. a single Excel file with multiple sheets). Inherits from dict.
     """
 
-    def __init__(self, dataframes: dict[str, DataFrameEntry] = None) -> None:
+    def __init__(self, dataframes: dict[str, DataFrameEntry] | None = None) -> None:
+        """
+        Initialize a DataFrameManager instance with an optional dictionary of DataFrameEntry objects.
+        """
         super().__init__(dataframes or {})
 
     @classmethod
@@ -49,6 +53,7 @@ class DataFrameManager(dict):
 
         Args:
             source_url (str): The URL of the data source.
+            kwargs: Additional keyword arguments.
 
         Returns:
             DataFrameManager: An instance of DataFrameManager populated with DataFrameEntry objects from the source.
@@ -74,18 +79,21 @@ class DataFrameManager(dict):
         """
         if not overwrite and self:
             raise ValueError(
-                "DataFrames already exist. Use 'overwrite=True' to replace them."
+                "DataFrames already exist. Use 'overwrite=True' to replace them.",
             )
 
         # Load dataframes, lowercasing the keys
         raw_df_dict = pd.read_excel(
-            pd.ExcelFile(load_data_from_url(source_url)), sheet_name=None
+            pd.ExcelFile(load_data_from_url(source_url)),
+            sheet_name=None,
         )
 
         # Extract table names given kwarg or 'title(s)' as titles_sheet_name
         titles_sheet_name = self.find_titles_sheet_name(raw_df_dict.keys(), **kwargs)
         table_names_and_themes = self.extract_table_names(
-            raw_df_dict, titles_sheet_name, **kwargs
+            raw_df_dict,
+            titles_sheet_name,
+            **kwargs,
         )
 
         # Drop the titles sheet if specified
@@ -97,12 +105,12 @@ class DataFrameManager(dict):
         for key, df in raw_df_dict.items():
             table_info = table_names_and_themes[key]
             table_name, table_theme = table_info["name"], table_info["theme"]
-            metadata, df = extract_metadata(
-                df.dropna(how="all").reset_index(drop=True), **kwargs
+            metadata, extracted_df = extract_metadata(
+                df.dropna(how="all").reset_index(drop=True),
             )
 
             df_entry = DataFrameEntry(
-                dataframe=df,
+                dataframe=extracted_df,
                 name=table_name,
                 original_sheet_name=key,
                 years_covered=(
@@ -112,17 +120,18 @@ class DataFrameManager(dict):
                 tags={table_theme} if table_theme else set(),
             )
 
+            # Place in Entry in DataFrameManager
             if key != "Introduction":
-                key = int_key
+                self[int_key] = df_entry
                 int_key += 1
-
-            self[key] = df_entry
+            else:
+                self[key] = df_entry
 
     def extract_table_names(
         self,
         df_dict: dict[str, pd.DataFrame],
         titles_sheet_name: str,
-        title_cleaning_patterns: list[str] = None,
+        title_cleaning_patterns: list[str] | None = None,
         **kwargs,
     ) -> dict[str, str]:
         """
@@ -130,7 +139,7 @@ class DataFrameManager(dict):
 
         Args:
             df_dict (dict[str, pd.DataFrame]): A dictionary of DataFrames as returned by pd.read_excel when sheet_name=None.
-            title_sheet_name (str): The name of the sheet containing the table names.
+            titles_sheet_name (str): The name of the sheet containing the table names.
             title_cleaning_patterns (list[str]): A list of patterns mapped to PATTERN_MAP in constants/mappings.py.
             **kwargs: Additional keyword arguments.
                 - title_sheet_type (str): The type of sheet containing the table names.
@@ -143,7 +152,7 @@ class DataFrameManager(dict):
         """
 
         # Define helper function to allow for vectorization
-        def process_titles_row(row):
+        def process_titles_row(row: pd.Series) -> pd.Series:
             table = row.iloc[0]
             table_name = row.iloc[1]
 
@@ -153,17 +162,17 @@ class DataFrameManager(dict):
                     table = "0" + table.split(" ")[-1]
                     if title_cleaning_patterns:
                         table_name = clean_string_with_named_patterns(
-                            table_name, *title_cleaning_patterns
+                            table_name,
+                            *title_cleaning_patterns,
                         )
                     return pd.Series([table, None, table_name])
-
-                elif "Introduction" in table:
+                if "Introduction" in table:
                     return pd.Series(["Introduction", None, table_name])
 
                 return pd.Series([None, None, None])
 
             # Handle wiki-style title sheets
-            elif title_sheet_type == "wiki":
+            if title_sheet_type == "wiki":
                 theme_code = (
                     re.match(r"^[A-Z]+", table).group()
                     if re.match(r"^[A-Z]+", table)
@@ -174,7 +183,8 @@ class DataFrameManager(dict):
                 # Clean the table name if patterns are provided
                 if title_cleaning_patterns:
                     table_name = clean_string_with_named_patterns(
-                        table_name, *title_cleaning_patterns
+                        table_name,
+                        *title_cleaning_patterns,
                     )
 
                 if "Introduction" in table:
@@ -189,9 +199,9 @@ class DataFrameManager(dict):
 
         # Extract table names from the titles sheet
         title_cleaning_patterns = (
-            kwargs.get("title_cleaning_patterns")
-            if not title_cleaning_patterns
-            else title_cleaning_patterns
+            title_cleaning_patterns
+            if title_cleaning_patterns
+            else kwargs.get("title_cleaning_patterns")
         )
         title_sheet_type = kwargs.get("title_sheet_type", "normal")
 
@@ -225,7 +235,7 @@ class DataFrameManager(dict):
         return key
 
     @staticmethod
-    def categorize_metadata(metadata_set):
+    def categorize_metadata(metadata_set: set[str]) -> dict:
         """
         Categorize metadata into 'source' and 'notes' based on content.
 
@@ -275,7 +285,7 @@ class DataFrameManager(dict):
 
         raise KeyError("Title sheet name not found in the DataFrame dictionary.")
 
-    def __iter__(self):
+    def __iter__(self) -> iter:
         """
         Override the default iterator to return the DataFrameEntry objects instead of the keys.
         """
@@ -294,4 +304,4 @@ class DataFrameManager(dict):
         Print a list of DataFrame names in the DataFrameManager.
         """
         for df in self.dataframe_names:
-            print(df)
+            print(df)  # noqa: T201

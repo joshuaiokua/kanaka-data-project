@@ -9,11 +9,13 @@ TODO:
 Functions:
 - format_column_name: Format a singular column name.
 - format_column_names: Format a list of column names.
+- infer_column_types: Infer the data types of a DataFrame's columns.
 """
 
 import re
-from pandas import DataFrame, isna
 from typing import Optional
+
+from pandas import DataFrame, isna, to_datetime, to_numeric
 
 from src.constants.mappings import SUBSTITUTION_MAP
 
@@ -22,8 +24,11 @@ IGNORED_WORDS = ("census", "estimates")
 
 
 ### --- FUNCTIONS --- ###
-def format_column_name(name: str, ignored: list = IGNORED_WORDS,
-                       substitutions: Optional[dict] = None) -> str:
+def format_column_name(
+    name: str,
+    ignored: list = IGNORED_WORDS,
+    substitutions: Optional[dict] = None,
+) -> str:
     """
     Format a singular column name.
 
@@ -45,16 +50,18 @@ def format_column_name(name: str, ignored: list = IGNORED_WORDS,
         if word in ignored:
             continue
 
-        if word in substitutions:
-            word = substitutions[word]
-
-        formatted_list.append(word)
+        # Appends sub word if in `substitutions` else original word
+        formatted_list.append(substitutions.get(word, word))
 
     return "_".join(formatted_list).strip("_")
 
 
-def format_column_names(df: DataFrame, inplace: bool = False,
-                        flag_word: str = "Unnamed") -> list:
+def format_column_names(
+    df: DataFrame,
+    inplace: bool = False,
+    flag_word: str = "Unnamed",
+    min_rows: int = 2,
+) -> list:
     """
     Format a list of column names.
 
@@ -62,6 +69,7 @@ def format_column_names(df: DataFrame, inplace: bool = False,
         df (DataFrame): The DataFrame containing the column names to format.
         inplace (bool): Whether to modify the DataFrame in place.
         flag_word (str): A word that indicates the column name is invalid.
+        min_rows (int): The minimum number of rows required to format the column names.
 
     Returns:
         list: The formatted column names
@@ -69,8 +77,9 @@ def format_column_names(df: DataFrame, inplace: bool = False,
     if df.empty:
         raise ValueError("DataFrame is empty.")
 
-    if df.shape[0] < 2:
-        raise ValueError("DataFrame must have at least two rows to check for NaN.")
+    if df.shape[0] < min_rows:
+        msg = f"DataFrame has fewer than {min_rows} rows."
+        raise ValueError(msg)
 
     curr_names, new_names = df.columns, []
     last_valid_column_idx = 0
@@ -88,5 +97,43 @@ def format_column_names(df: DataFrame, inplace: bool = False,
     if inplace:
         df.columns = new_names
         return df  # Return the DataFrame for method chaining
-    else:
-        return new_names
+    return new_names
+
+
+def infer_column_types(
+    df: DataFrame,
+    return_modified_df: bool = False,
+    category_ceiling: float = 0.05,
+) -> dict:
+    """
+    Infer the data types of a DataFrame's columns.
+
+    Args:
+        df (DataFrame): The DataFrame to infer the column types of.
+        return_modified_df (bool): Whether to return the modified DataFrame with the inferred data types.
+        category_ceiling (float): The maximum ratio of unique values to total values for a column to be considered a category.
+
+    Returns:
+        dict: A dictionary mapping column names to their inferred data types.
+    """
+    inferred_types = {}
+
+    for col in df.columns:
+        sample = df[col].dropna()
+
+        if to_numeric(sample, errors="coerce").notna().all():
+            if (sample.astype(float) % 1 == 0).all():  # all values whole numbers
+                inferred_types[col] = "int"
+            else:
+                inferred_types[col] = "float"
+        elif to_datetime(sample, errors="coerce").notna().all():
+            inferred_types[col] = "datetime"
+        elif sample.nunique() / len(sample) < category_ceiling:
+            inferred_types[col] = "category"
+        else:
+            inferred_types[col] = "str"
+
+    if return_modified_df:
+        return df.astype(inferred_types)
+
+    return inferred_types

@@ -21,7 +21,7 @@ from src.utils import clean_string_with_named_patterns
 
 ### --- FUNCTIONS --- ###
 def extract_metadata(
-    df: DataFrame, column_idx: int = 0, remove_rows: bool = True, **kwargs
+    df: DataFrame, column_idx: int = 0, remove_rows: bool = True,
 ) -> tuple[set[str], DataFrame]:
     """
     Extract metadata (e.g. annotations, commentary, source) from a DataFrame.
@@ -31,7 +31,6 @@ def extract_metadata(
         df (pd.DataFrame): The DataFrame from which to extract metadata.
         column_idx (int): The index of the column expected to contain non-NaN values in metadata rows.
         remove_rows (bool): Whether to return the DataFrame with the metadata rows removed.
-        **kwargs: Additional keyword arguments.
 
     Returns:
         tuple[set[str], pd.DataFrame]: A set containing the extracted metadata and the DataFrame with metadata rows removed (if specified).
@@ -46,9 +45,9 @@ def extract_metadata(
         .str.strip()
         .apply(
             lambda x: clean_string_with_named_patterns(
-                x, "glottal_stop", "bullet", "newline", "non_breaking_space"
-            )
-        )
+                x, "glottal_stop", "bullet", "newline", "non_breaking_space",
+            ),
+        ),
     )
 
     # Optionally remove metadata rows from original DataFrame

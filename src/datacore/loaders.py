@@ -29,7 +29,7 @@ def load_json(file_path: str, encoding: str = "utf-8") -> dict:
     Returns:
         dict: The JSON data as a dictionary.
     """
-    with open(file_path, encoding=encoding, mode="r") as file:
+    with open(file_path, encoding=encoding) as file:
         return json.loads(file.read())
 
 

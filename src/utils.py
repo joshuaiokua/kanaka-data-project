@@ -50,7 +50,8 @@ def clean_string_with_named_patterns(string: str, *pattern_keys: str) -> str:
     """
     for pattern_key in pattern_keys:
         if pattern_key not in PATTERN_MAP:
-            raise KeyError(f"Pattern key '{pattern_key}' not found in PATTERN_MAP.")
+            msg = f"Pattern key '{pattern_key}' not found in PATTERN_MAP."
+            raise KeyError(msg)
 
         # Retrieve the pattern-replacement tuple and apply it
         pattern, replacement = PATTERN_MAP[pattern_key]
