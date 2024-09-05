@@ -9,7 +9,6 @@ TODO:
 Functions:
 - format_column_name: Format a singular column name.
 - format_column_names: Format a list of column names.
-- infer_column_types: Infer the data types of a DataFrame's columns.
 """
 
 import re
@@ -98,42 +97,3 @@ def format_column_names(
         df.columns = new_names
         return df  # Return the DataFrame for method chaining
     return new_names
-
-
-def infer_column_types(
-    df: DataFrame,
-    return_modified_df: bool = False,
-    category_ceiling: float = 0.05,
-) -> dict:
-    """
-    Infer the data types of a DataFrame's columns.
-
-    Args:
-        df (DataFrame): The DataFrame to infer the column types of.
-        return_modified_df (bool): Whether to return the modified DataFrame with the inferred data types.
-        category_ceiling (float): The maximum ratio of unique values to total values for a column to be considered a category.
-
-    Returns:
-        dict: A dictionary mapping column names to their inferred data types.
-    """
-    inferred_types = {}
-
-    for col in df.columns:
-        sample = df[col].dropna()
-
-        if to_numeric(sample, errors="coerce").notna().all():
-            if (sample.astype(float) % 1 == 0).all():  # all values whole numbers
-                inferred_types[col] = "int"
-            else:
-                inferred_types[col] = "float"
-        elif to_datetime(sample, errors="coerce").notna().all():
-            inferred_types[col] = "datetime"
-        elif sample.nunique() / len(sample) < category_ceiling:
-            inferred_types[col] = "category"
-        else:
-            inferred_types[col] = "str"
-
-    if return_modified_df:
-        return df.astype(inferred_types)
-
-    return inferred_types
