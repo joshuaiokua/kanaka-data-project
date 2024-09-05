@@ -304,4 +304,4 @@ class DataFrameManager(dict):
         Print a list of DataFrame names in the DataFrameManager.
         """
         for df in self.dataframe_names:
-            print(df)  # noqa: T201
+            print(df)

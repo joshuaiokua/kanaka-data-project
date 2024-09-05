@@ -86,4 +86,4 @@ class DataFrameEntry:
         """
         Print the DataFrameEntry object in a human-readable format.
         """
-        print(self)  # noqa: T201
+        print(self)
