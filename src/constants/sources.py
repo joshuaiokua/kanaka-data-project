@@ -8,6 +8,7 @@ Constants for various sources (e.g. file paths, URLs).
 # OHA Data Book
 _OHA_BASE = "https://www.ohadatabook.com/"
 _OHA_DB_BASE = f"{_OHA_BASE}CHAP%200"
+_OHA_LOCAL_BASE = "data/unprocessed/"
 
 ### --- DATA SOURCE MAPS --- ###
 OHA_DATA_BOOK = {
@@ -22,4 +23,9 @@ OHA_DATA_BOOK = {
     "welfare": f"{_OHA_DB_BASE}8%20Human%20Services.23.xlsx",
     "crime": f"{_OHA_DB_BASE}9%20Crime.23.xlsx",
     "legacy_data": f"{_OHA_DB_BASE}10%20Legacy%20Data.23.xlsx",
+}
+
+OHA_DATA_BOOK_LOCAL = {
+    "wiki": f"{_OHA_LOCAL_BASE}CHAP 00 Wiki Data.23.xlsx",
+    "population": f"{_OHA_LOCAL_BASE}CHAP 01 Population.23.xlsx",
 }
