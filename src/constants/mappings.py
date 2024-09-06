@@ -16,6 +16,10 @@ from re import compile
 
 SUBSTITUTION_MAP = {
     "%": "percent",
+    "populationa": "population",
+    "populationb": "population",
+    "hawaiiana": "hawaiian",
+    "hawaiianb": "hawaiian",
 }
 
 PATTERN_MAP = {
@@ -25,6 +29,12 @@ PATTERN_MAP = {
     "newline": (compile(r"\n"), "; "),
     "non_breaking_space": (compile(r"\xa0+"), " "),
     "hyphens": (compile(r"[\u2011‑]"), "-"),
+    "asterisk": (compile(r"\s*\*\s*"), ""),
+    "remove_state": (compile(r"\b[Ss]tate(?: of)?\s+"), ""),
+    "slash": (compile(r"\s*/\s*"), "_or_"),
+    "parentheses": (compile(r"[()]"), ""),
+    "comma": (compile(r",\s*"), ""),
+    "apostrophe": (compile(r"'"), ""),
 }
 
 THEME_MAP = {
