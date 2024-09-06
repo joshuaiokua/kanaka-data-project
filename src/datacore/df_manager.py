@@ -62,6 +62,22 @@ class DataFrameManager(dict):
         instance.load_from_url(source_url, **kwargs)
         return instance
 
+    @classmethod
+    def from_excel(cls, file_path: str, **kwargs) -> "DataFrameManager":
+        """
+        Create a DataFrameManager instance from an Excel file.
+
+        Args:
+            file_path (str): The path to the Excel file.
+            kwargs: Additional keyword arguments.
+
+        Returns:
+            DataFrameManager: An instance of DataFrameManager populated with DataFrameEntry objects from the Excel file.
+        """
+        instance = cls()
+        instance.load_from_excel(file_path, **kwargs)
+        return instance
+
     def load_from_url(self, source_url: str, overwrite: bool = False, **kwargs) -> None:
         """
         Load data from a URL and store it as a series of DataFrameEntry objects within the DataFrameManager.
@@ -70,25 +86,51 @@ class DataFrameManager(dict):
             source_url (str): The URL of the data source.
             overwrite (bool): Whether to overwrite existing DataFrames in the DataFrameManager.
             **kwargs: Additional keyword arguments.
-                - titles_sheet_name (str): The name of the sheet containing the table names.
-                - title_cleaning_patterns (list[str]): List regex patterns.
-                - drop_title_sheet (bool): Flag to drop title sheet after extracting table names.
-
-        Raises:
-            ValueError: If DataFrames already exist and overwrite is set to False.
         """
         if not overwrite and self:
             raise ValueError(
                 "DataFrames already exist. Use 'overwrite=True' to replace them.",
             )
 
-        # Load dataframes, lowercasing the keys
+        # Load dataframes from URL
         raw_df_dict = pd.read_excel(
             pd.ExcelFile(load_data_from_url(source_url)),
             sheet_name=None,
         )
+        self._process_raw_dataframes(raw_df_dict, **kwargs)
 
-        # Extract table names given kwarg or 'title(s)' as titles_sheet_name
+    def load_from_excel(
+        self, excel_file: str, overwrite: bool = False, **kwargs
+    ) -> None:
+        """
+        Load data from an Excel file and store it as a series of DataFrameEntry objects within the DataFrameManager.
+
+        Args:
+            excel_file (str): The path to the Excel file.
+            overwrite (bool): Whether to overwrite existing DataFrames in the DataFrameManager.
+            **kwargs: Additional keyword arguments.
+        """
+        if not overwrite and self:
+            raise ValueError(
+                "DataFrames already exist. Use 'overwrite=True' to replace them.",
+            )
+
+        # Load dataframes from Excel file
+        raw_df_dict = pd.read_excel(
+            pd.ExcelFile(excel_file),
+            sheet_name=None,
+        )
+        self._process_raw_dataframes(raw_df_dict, **kwargs)
+
+    def _process_raw_dataframes(self, raw_df_dict: dict, **kwargs) -> None:
+        """
+        Process raw dataframes and store them as DataFrameEntry objects in the DataFrameManager.
+
+        Args:
+            raw_df_dict (dict): Dictionary of raw DataFrames.
+            kwargs: Additional keyword arguments.
+        """
+        # Extract table names and themes, handle title sheets, etc.
         titles_sheet_name = self.find_titles_sheet_name(raw_df_dict.keys(), **kwargs)
         table_names_and_themes = self.extract_table_names(
             raw_df_dict,
@@ -96,15 +138,14 @@ class DataFrameManager(dict):
             **kwargs,
         )
 
-        # Drop the titles sheet if specified
         if kwargs.get("drop_title_sheet", False) and titles_sheet_name:
             raw_df_dict.pop(titles_sheet_name, None)
 
         int_key = 1
-
         for key, df in raw_df_dict.items():
-            table_info = table_names_and_themes[key]
-            table_name, table_theme = table_info["name"], table_info["theme"]
+            table_info = table_names_and_themes.get(key, {})
+            table_name = table_info.get("name", key)
+            table_theme = table_info.get("theme", None)
             metadata, extracted_df = extract_metadata(
                 df.dropna(how="all").reset_index(drop=True),
             )
@@ -120,7 +161,6 @@ class DataFrameManager(dict):
                 tags={table_theme} if table_theme else set(),
             )
 
-            # Place in Entry in DataFrameManager
             if key != "Introduction":
                 self[int_key] = df_entry
                 int_key += 1
