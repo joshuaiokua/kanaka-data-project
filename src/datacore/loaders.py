@@ -11,10 +11,13 @@ Functions:
 - load_data_from_url: Load data from a URL.
 """
 
+### --- External Imports --- ###
 import json
 from io import BytesIO
 
 import requests
+from cloudbozo.cockroach.base import CockroachDBManager
+from pandas import DataFrame
 
 
 ### --- FUNCTIONS --- ###
@@ -47,3 +50,29 @@ def load_data_from_url(url: str, timeout: int = 10) -> BytesIO:
     response = requests.get(url, timeout=timeout)
     response.raise_for_status()
     return BytesIO(response.content)
+
+
+async def load_dataframe_from_db(
+    table_name: str,
+    db_manager: CockroachDBManager,
+) -> DataFrame:
+    """
+    Load a DataFrame from a CockroachDB table.
+
+    Args:
+        table_name (str): The name of the table in the database.
+        db_manager (CockroachDBManager): The CockroachDBManager object.
+
+    Returns:
+        DataFrame: The loaded DataFrame.
+    """
+    # Connect to the database if not already connected
+    if not db_manager.is_connected:
+        await db_manager.connect()
+
+    columns, rows = await db_manager.execute_query(
+        f"SELECT * FROM {table_name}",
+        return_columns=True,
+    )
+
+    return DataFrame(rows, columns=columns)
