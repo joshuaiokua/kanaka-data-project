@@ -40,7 +40,7 @@ dev-dependencies = [
 ]
 
 [tool.uv.sources]
-cloudbozo = { git = "https://github.com/joshuaiokua/cloudbozo", branch = "iteration-v2-initial-updates" }
+cloudbozo = { git = "https://github.com/joshuaiokua/cloudbozo", rev = "iteration-v2-initial-updates" }
 
 [tool.hatch.build.targets.wheel]
 packages = ["src"]

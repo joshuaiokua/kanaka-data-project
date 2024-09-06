@@ -37,10 +37,12 @@ class DataFrameEntry:
         """
         if self.dataframe is not None:
             return self.dataframe._repr_html_()
-        else:
-            return "<i>Empty DataFrameEntry</i>"
+        return "<i>Empty DataFrameEntry</i>"
 
     def __repr__(self) -> str:
+        """
+        Print the DataFrameEntry object in a Python-readable format.
+        """
         return (
             f"DataFrameEntry(\n"
             f"    name='{self.name}',\n"
@@ -53,6 +55,9 @@ class DataFrameEntry:
         )
 
     def __str__(self) -> str:
+        """
+        Print the DataFrameEntry object in a human-readable format.
+        """
         # Prepare metadata for printing
         if self.metadata:
             formatted_metadata = []
@@ -60,7 +65,7 @@ class DataFrameEntry:
                 if isinstance(value, list):
                     formatted_items = "\n      - ".join(value)
                     formatted_metadata.append(
-                        f"{key.capitalize()}:\n      - {formatted_items}"
+                        f"{key.capitalize()}:\n      - {formatted_items}",
                     )
                 else:
                     formatted_metadata.append(f"{key.capitalize()}: {value}")
