@@ -5,26 +5,18 @@ NOTE: Tools, as defined by a `@tool` decorator or as an extension of the BaseToo
 """
 
 # External Libraries
-from typing import Type
-
-from langchain.callbacks.manager import (
-    AsyncCallbackManagerForToolRun,
-    CallbackManagerForToolRun,
-)
-from langchain.pydantic_v1 import BaseModel, Field
-from langchain_community.utilities.sql_database import SQLDatabase
-from langchain_core.messages import ToolMessage
+from langchain_core.messages import AIMessage, ToolMessage
 from langchain_core.runnables import (
     Runnable,
     RunnableBinding,
     RunnableLambda,
     RunnableWithFallbacks,
 )
-from langchain_core.tools import BaseTool, Tool
+from langchain_core.tools import Tool
 from langgraph.prebuilt import ToolNode
 
 # Internal Libraries
-from src.utils import get_class_name
+from src.utils import create_random_identifier
 
 from .utils import ChatModel, State
 
@@ -104,28 +96,34 @@ def create_tool_node(
     return ToolNode(tools)
 
 
-def bind_tools(
-    model: ChatModel,
-    tools: list,
-    tool_choice: str | dict = "auto",
-) -> RunnableBinding:
+def create_tool_call(
+    tool_name: str,
+    tool_args: dict | None = None,
+    tool_id: str | None = None,
+    message_content: str = "",
+) -> dict:
     """
-    Bind tools to a model, accounting for how Groq handles `tool_choice`. Functions as a wrapper for `model.bind_tools` method.
+    Call the tool(s) specified by the function's tool arguments.
     """
-    # Handle Groq models with `tool_choice = required`
-    if "Groq" in get_class_name(model) and tool_choice == "required":
-        if len(tools) > 1:
-            raise ValueError(
-                "Groq allows only one tool to be used when `tool_choice = required`.",
-            )
-        tool_choice = {"type": "function", "function": {"name": tools[0].name}}
-
-    return model.bind_tools(tools, tool_choice=tool_choice)
+    return {
+        "messages": [
+            AIMessage(
+                content=message_content,
+                tool_calls=[
+                    {
+                        "name": tool_name,
+                        "args": tool_args if tool_args else {},
+                        "id": tool_id if tool_id else create_random_identifier("tool"),
+                    },
+                ],
+            ),
+        ],
+    }
 
 
 def create_tooled_model(
     model: ChatModel,
-    tools: list[Tool],
+    tools: list[Tool] | str,
     tool_choice: str | dict,
     model_kwargs: dict | None = None,
 ) -> RunnableBinding:
@@ -134,16 +132,29 @@ def create_tooled_model(
 
     Args:
         model (ChatModel): The model to bind tools to.
-        tools (list[Tool]): The tool(s) to bind to the model.
+        tools (list[Tool] | str): The tool(s) to bind to the model.
         tool_choice (str | dict): The tool choice to use (e.g. "required", "auto", etc.).
         model_kwargs (dict): Keyword arguments to pass to the model, such as:
             - model
             - temperature
     """
+    # Initialize model with keyword arguments if provided
     if model_kwargs is not None:
         model = model(**model_kwargs)
 
-    return bind_tools(model, tools, tool_choice)
+    # Cast tools to list if not already
+    tools = [tools] if not isinstance(tools, list) else tools
+
+    # Handle `required` tool choice
+    if tool_choice == "required":
+        if len(tools) != 1:
+            raise ValueError("Exactly one tool is needed for 'required' tool choice.")
+        return model.bind_tool(
+            tools,
+            tool_choice=tools[0].name,
+        )
+
+    return model.bind_tools(tools, tool_choice)
 
 
 ### --- TOOLS --- ###

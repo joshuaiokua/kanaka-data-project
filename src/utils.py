@@ -11,6 +11,7 @@ Functions:
 
 # External Imports
 import re
+from random import randint
 from typing import Pattern
 
 # Local Imports
@@ -126,6 +127,17 @@ def extract_years_from_string(title: str) -> list:
     return years
 
 
+def create_random_identifier(
+    prefix: str = "",
+    separator: str = "_",
+    ceiling: int = 1000,
+) -> str:
+    """
+    Create a pseudo-random identifier string. Should not be used for cryptographic purposes.
+    """
+    return f"{prefix}{separator}{randint(0, ceiling)}"  # noqa: S311
+
+
 def can_cast_to_int(s: str) -> bool:
     """
     Check if the given string can be cast to an integer.
@@ -141,16 +153,3 @@ def can_cast_to_int(s: str) -> bool:
         return True
     except ValueError:
         return False
-
-
-def get_class_name(obj: object) -> str:
-    """
-    Get the class name of an object as a string.
-
-    Args:
-        obj (object): The object to get the class name of.
-
-    Returns:
-        str: The class name of the
-    """
-    return obj.__class__.__name__
