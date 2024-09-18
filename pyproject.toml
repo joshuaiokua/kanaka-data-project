@@ -11,8 +11,10 @@ dependencies = [
     "openpyxl",
     "python-dotenv",
     "langchain",
+    "langchain-community",
     "qdrant-client[fastembed]",
     "cloudbozo",
+    "langgraph>=0.2.21",
 ]
 
 [project.optional-dependencies]
@@ -27,6 +29,10 @@ anthropic = [
 groq = [
     "groq",
     "langchain-groq",
+]
+db = [
+    "psycopg2-binary",
+    "sqlalchemy-cockroachdb",
 ]
 
 [build-system]
