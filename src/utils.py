@@ -141,3 +141,16 @@ def can_cast_to_int(s: str) -> bool:
         return True
     except ValueError:
         return False
+
+
+def get_class_name(obj: object) -> str:
+    """
+    Get the class name of an object as a string.
+
+    Args:
+        obj (object): The object to get the class name of.
+
+    Returns:
+        str: The class name of the
+    """
+    return obj.__class__.__name__
