@@ -34,6 +34,7 @@ By leveraging techniques like retrieval-augmented generation (RAG) and domain ad
 
 Within this project's overarching goal, I will also explore several specific ideas, listed below, which help to guide development and, as such, are likely to change as the project progresses. See `experiments/README.md` for more information.
 
+- Optimizing Table and Column Names for LLM SQL Agent Applications
 - Enhancing Data Exploration and Interactivity with LLMs
 - Summarizing and Representing Numerical Data for LLM Integration
 - Domain-Specific Fine-Tuning of LLMs
