@@ -12,9 +12,7 @@ dependencies = [
     "python-dotenv",
     "langchain",
     "langchain-community",
-    "qdrant-client[fastembed]",
-    "cloudbozo",
-    "langgraph>=0.2.21",
+    "langgraph",
 ]
 
 [project.optional-dependencies]
@@ -33,6 +31,8 @@ groq = [
 db = [
     "psycopg2-binary",
     "sqlalchemy-cockroachdb",
+    "qdrant-client[fastembed]",
+    "cloudbozo",
 ]
 
 [build-system]
