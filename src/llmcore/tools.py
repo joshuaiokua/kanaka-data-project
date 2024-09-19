@@ -5,6 +5,8 @@ NOTE: Tools, as defined by a `@tool` decorator or as an extension of the BaseToo
 """
 
 # External Libraries
+from typing import Callable
+
 from langchain_core.messages import AIMessage, ToolMessage
 from langchain_core.runnables import (
     Runnable,
@@ -72,7 +74,7 @@ def handle_tool_error(state: State) -> dict:
 def create_tool_node(
     tool: Tool | list[Tool],
     with_fallbacks: bool = True,
-    fallbacks: list[callable] | None = None,
+    fallbacks: list[Callable] | None = None,
 ) -> ToolNode | Runnable | RunnableWithFallbacks:
     """
     Create a ToolNode with or without fallbacks.
@@ -121,19 +123,19 @@ def create_tool_call(
     }
 
 
-def create_tooled_model(
+def create_tooled_agent(
     model: ChatModel,
     tools: list[Tool] | str,
-    tool_choice: str | dict,
+    tool_choice: str | dict = "auto",
     model_kwargs: dict | None = None,
 ) -> RunnableBinding:
     """
-    Create a model with tools bound to it, accounting for how Groq handles `tool_choice`. Functions as a wrapper for `bind_tools` method.
+    Create an agent (i.e. LLM model) with tools bound to it.
 
     Args:
         model (ChatModel): The model to bind tools to.
         tools (list[Tool] | str): The tool(s) to bind to the model.
-        tool_choice (str | dict): The tool choice to use (e.g. "required", "auto", etc.).
+        tool_choice (str | dict): The tool or tool choice (e.g. "auto") to bind to the m
         model_kwargs (dict): Keyword arguments to pass to the model, such as:
             - model
             - temperature
@@ -149,7 +151,7 @@ def create_tooled_model(
     if tool_choice == "required":
         if len(tools) != 1:
             raise ValueError("Exactly one tool is needed for 'required' tool choice.")
-        return model.bind_tool(
+        return model.bind_tools(
             tools,
             tool_choice=tools[0].name,
         )
