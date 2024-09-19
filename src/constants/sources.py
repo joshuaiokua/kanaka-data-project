@@ -10,6 +10,8 @@ _OHA_BASE = "https://www.ohadatabook.com/"
 _OHA_DB_BASE = f"{_OHA_BASE}CHAP%200"
 _OHA_LOCAL_BASE = "data/unprocessed/"
 
+DB_PATH = "data/databases/"
+
 ### --- DATA SOURCE MAPS --- ###
 OHA_DATA_BOOK = {
     "wiki": f"{_OHA_DB_BASE}0%20Wiki%20Data.23.xlsx",
