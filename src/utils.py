@@ -11,6 +11,7 @@ Functions:
 
 # External Imports
 import re
+from random import randint
 from typing import Pattern
 
 # Local Imports
@@ -124,6 +125,17 @@ def extract_years_from_string(title: str) -> list:
             years.append(int(match[2]))
 
     return years
+
+
+def create_random_identifier(
+    prefix: str = "",
+    separator: str = "_",
+    ceiling: int = 1000,
+) -> str:
+    """
+    Create a pseudo-random identifier string. Should not be used for cryptographic purposes.
+    """
+    return f"{prefix}{separator}{randint(0, ceiling)}"  # noqa: S311
 
 
 def can_cast_to_int(s: str) -> bool:
