@@ -28,7 +28,7 @@ def show_graph(graph: StateGraph) -> None:
     )
 
 
-def get_model_provider(model: object) -> str:
+def get_model_provider(model: ChatModel) -> str:
     """
     Get the provider (e.g. Groq, OpenAI, etc.) of a model object.
     """
