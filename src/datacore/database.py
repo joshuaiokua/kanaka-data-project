@@ -5,6 +5,8 @@ Functions:
     load_local_database: Load a local SQLite database as a LangChain SQLDatabase object.
 """
 
+from pathlib import Path
+
 from langchain_community.utilities import SQLDatabase
 from sqlalchemy import create_engine
 from sqlalchemy.pool import StaticPool
@@ -32,7 +34,7 @@ def load_local_database(
         SQLDatabase: The database object.
     """
     engine = create_engine(
-        f"sqlite:///{database_path}{database_name}.db",
+        f"sqlite:///{database_path}/{database_name}.db",
         connect_args=connect_args or {"check_same_thread": False},
         poolclass=StaticPool,
         **kwargs,

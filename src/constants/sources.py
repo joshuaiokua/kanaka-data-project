@@ -2,7 +2,11 @@
 constants/sources.py
 
 Constants for various sources (e.g. file paths, URLs).
+
+TODO: Consider renaming to `paths.py`.
 """
+
+from src.utils import find_project_root
 
 ### --- CONSTANTS --- ###
 # OHA Data Book
@@ -10,7 +14,7 @@ _OHA_BASE = "https://www.ohadatabook.com/"
 _OHA_DB_BASE = f"{_OHA_BASE}CHAP%200"
 _OHA_LOCAL_BASE = "data/unprocessed/"
 
-DB_PATH = "data/databases/"
+DB_PATH = find_project_root() / "data/databases/"
 
 ### --- DATA SOURCE MAPS --- ###
 OHA_DATA_BOOK = {
