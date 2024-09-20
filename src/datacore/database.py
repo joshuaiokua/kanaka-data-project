@@ -1,4 +1,6 @@
 """
+Database Functionality
+
 Functionality for working with local databases (i.e. `data/databases/`) primarily as it relates to simple demonstrations and prototyping rather than production-level applications.
 
 Functions:

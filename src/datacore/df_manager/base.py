@@ -1,5 +1,5 @@
 """
-datacore/df_manager.py
+Base DataFrameManager Class
 
 Module for managing separate DataFrame objects that originate, or are somehow related to, the same data source (e.g. a single Excel file with multiple sheets).
 
@@ -14,27 +14,35 @@ TODO:
 - Revisit extract_years_from_string function for more robust year extraction
 
 
-Class Method Overview:
-- from_url(cls, source_url: str, **kwargs) -> "DataFrameManager": Create a DataFrameManager instance from a URL.
+Methods:
+    from_url: Create a DataFrameManager instance from a URL.
+    from_excel: Create a DataFrameManager instance from an Excel file.
+    load_from_url: Load data from a URL and store it as a series of DataFrameEntry objects within the DataFrameManager.
+    load_from_excel: Load data from an Excel file and store it as a series of DataFrameEntry objects within the DataFrameManager.
+    _process_raw_dataframes: Process raw dataframes and store them as DataFrameEntry objects in the DataFrameManager.
+    extract_table_names: Extract table names (i.e. sheet titles) from a dictionary of DataFrames if a 'Titles' sheet is present.
+    clean_key_format: Clean up the key format if following "00.00" format.
+    categorize_metadata: Categorize metadata into 'source' and 'notes' based on content.
+    find_titles_sheet_name: Find the title sheet name from a list of DataFrame dictionary keys or a specified keyword argument.
 """
 
-# External Imports
+# External Libraries
 import re
 from collections import defaultdict
 from functools import cached_property
 
 import pandas as pd
 
+# Local Libraries
 from src.constants.mappings import THEME_MAP
-
-# Local Imports
-from src.datacore.df_entry import DataFrameEntry
-from src.datacore.loaders import load_data_from_url
-from src.datacore.parsing import extract_metadata
 from src.utilities.string import (
     clean_string_with_named_patterns,
     extract_years_from_string,
 )
+
+from .df_entry import DataFrameEntry
+from .loaders import load_data_from_url
+from .parsing import extract_metadata
 
 
 ### --- CLASSES --- ###

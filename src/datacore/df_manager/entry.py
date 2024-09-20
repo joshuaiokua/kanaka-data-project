@@ -1,14 +1,16 @@
 """
-datacore/df_entry.py
+DataFrameEntry Class
 
-Module for DataFrame entry functionality.
+Module for DataFrameEntry class, which is a dataclass for storing a DataFrame object along with metadata to be used in the DataFrameManager class.
 
 TODO:
 - Functionality to consolidate __str__ and __repr__ methods for DataFrameEntry
 
+Methods:
+    info: Print the DataFrameEntry object in a human-readable format.
 """
 
-# External Imports
+# External Libraries
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional

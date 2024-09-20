@@ -1,17 +1,17 @@
 """
-datacore/loaders.py
+DataFrameManager Loader Module
 
-Functionality for loading data from various sources.
+Functionality for loading data from various sources, primarily for use in the DataFrameManager class.
 
 TODO:
 - Revisit logic for renaming columns
 
 Functions:
-- load_json: Load a JSON file into a dictionary.
-- load_data_from_url: Load data from a URL.
+    load_json: Load a JSON file into a dictionary.
+    load_data_from_url: Load data from a URL.
+    load_dataframe_from_db: Load a DataFrame from a CockroachDB table.
 """
 
-### --- External Imports --- ###
 import json
 from io import BytesIO
 
