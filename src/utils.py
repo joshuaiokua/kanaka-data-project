@@ -11,6 +11,7 @@ Functions:
 
 # External Imports
 import re
+from pathlib import Path
 from random import randint
 from typing import Pattern
 
@@ -153,3 +154,24 @@ def can_cast_to_int(s: str) -> bool:
         return True
     except ValueError:
         return False
+
+
+def find_project_root(start_path: Path | None = None) -> Path:
+    """
+    Programmatically find the project root by searching for a known directory or file (e.g., '.git' or 'pyproject.toml').
+
+    Args:
+        start_path (Path): The starting directory to begin the search. Defaults to the current file's directory.
+
+    Returns:
+        Path: The absolute path to the project root.
+    """
+    if start_path is None:
+        start_path = Path(__file__).resolve()
+
+    # Traverse up the directory tree until we find a known project root indicator
+    for parent in start_path.parents:
+        if (parent / ".git").exists() or (parent / "pyproject.toml").exists():
+            return parent
+    # If no project root is found, assume the start_path is the project root
+    return start_path.parent

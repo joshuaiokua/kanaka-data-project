@@ -2,10 +2,13 @@
 
 This project uses Llama 3.1, AWS, and Streamlit to centralize, clean, and visualize data on Kanaka Maoli (Native Hawaiians). By transforming fragmented datasets into accessible formats, it facilitates integration with LLMs and enhances data exploration through interactive visualizations. The goal is to create a conversational interface that allows users to explore key insights and trends in real-time.
 
+> **NOTE**: (9/24) As an MVP, this project will focus on a subset of data, potentially focused on one or two topics (e.g. population, land, etc.). Focusing first on proving that the concept is viable and then expanding to include more data sources and features.
+
 ## Table of Contents
 
 - [**Project Description and Goals**](#project-description-and-goals)
   - [Research Experiments](#research-experiments)
+  - [Roadmap](#roadmap)
 - [**Installation and Usage**](#installation-and-usage)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -26,7 +29,7 @@ This project is dedicated to centralizing and cleaning data related to Kanaka Ma
 
 While LLMs are commonly recognized for their generative capabilities, I believe they hold significant potential in making interacting with data--or more broadly, knowledge domains--more engaging and dynamic. I'm enamored with this idea of data exploration being a curated yet open-ended experience, where users can interact with data in a conversational manner, asking questions and receiving insights in real-time. Almost like a choose-your-own-adventure book or a Dungeons & Dragons campaign!
 
-By leveraging techniques like retrieval-augmented generation (RAG) and domain adaptation fine-tuning, I aim to develop a Streamlit-LLM application that allows users to interact with Kanaka Maoli data in this dynamic way—a true ["talk story"/mo'olelo](https://education.nationalgeographic.org/resource/storytelling-and-cultural-traditions/)experience.
+By leveraging techniques like retrieval-augmented generation (RAG) and domain adaptation fine-tuning, I aim to develop a Streamlit-LLM application that allows users to interact with Kanaka Maoli data in this dynamic way—a true [mo'olelo](https://education.nationalgeographic.org/resource/storytelling-and-cultural-traditions/) experience.
 
 > **Note**: This project deeply respects the original work of organizations like the Office of Hawaiian Affairs and seeks to build on their efforts, not critique them. By making the data more accessible, the project hopes to inspire more exploration of the original sources and highlight the value of the work done by these organizations.[^bignote2]
 
@@ -34,11 +37,21 @@ By leveraging techniques like retrieval-augmented generation (RAG) and domain ad
 
 Within this project's overarching goal, I will also explore several specific ideas, listed below, which help to guide development and, as such, are likely to change as the project progresses. See `experiments/README.md` for more information.
 
-- Optimizing Table and Column Names for LLM SQL Agent Applications
+- Optimizing SQL Database Structure and Naming Conventions for LLM Integration
+  - [Initial SQL Agent Implementation Notebook](experiments/notebooks/initial-sql-agent.ipynb)
 - Enhancing Data Exploration and Interactivity with LLMs
 - Summarizing and Representing Numerical Data for LLM Integration
 - Domain-Specific Fine-Tuning of LLMs
 - Streamlining Multi-DataFrame Workflows in Jupyter Notebooks
+
+### Roadmap
+
+| Phase            | Task                              | Status      |
+|------------------|-----------------------------------|-------------|
+| **Iteration 1**  | Centralize and clean Kanaka data subset  | *Completed*  |
+| **Iteration 2**  | Initial SQL Agent Implementation  | *Completed* |
+| **Iteration 3**  | SQL Agent Improvements and Contextual Data Exploration  | **In Progress**  |
+| **Iteration 4**  | Fuller Contextual Data Integration  | Upcoming    |
 
 ## Installation and Usage
 

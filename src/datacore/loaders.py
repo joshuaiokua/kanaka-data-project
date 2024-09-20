@@ -16,7 +16,6 @@ import json
 from io import BytesIO
 
 import requests
-from cloudbozo.cockroach.base import CockroachDBManager
 from pandas import DataFrame
 
 
@@ -54,7 +53,7 @@ def load_data_from_url(url: str, timeout: int = 10) -> BytesIO:
 
 async def load_dataframe_from_db(
     table_name: str,
-    db_manager: CockroachDBManager,
+    db_manager: object,
 ) -> DataFrame:
     """
     Load a DataFrame from a CockroachDB table.
@@ -71,7 +70,8 @@ async def load_dataframe_from_db(
         await db_manager.connect()
 
     columns, rows = await db_manager.execute_query(
-        f"SELECT * FROM {table_name}",
+        "SELECT * FROM %s",
+        (table_name,),
         return_columns=True,
     )
 

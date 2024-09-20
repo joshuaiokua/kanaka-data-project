@@ -12,16 +12,8 @@ annotated-types==0.7.0
     # via pydantic
 anyio==4.4.0
     # via httpx
-asyncpg==0.29.0
-    # via cloudbozo
 attrs==24.2.0
     # via aiohttp
-boto3==1.35.5
-    # via cloudbozo
-botocore==1.35.5
-    # via
-    #   boto3
-    #   s3transfer
 certifi==2024.7.4
     # via
     #   httpcore
@@ -29,64 +21,26 @@ certifi==2024.7.4
     #   requests
 charset-normalizer==3.3.2
     # via requests
-cloudbozo @ git+https://github.com/joshuaiokua/cloudbozo@4ccfe72eae21d8fbbb86648bf22a5b5c1ee31f01
-    # via kanaka-data-project (pyproject.toml)
-coloredlogs==15.0.1
-    # via onnxruntime
 dataclasses-json==0.6.7
     # via langchain-community
-et-xmlfile==1.1.0
-    # via openpyxl
-fastembed==0.3.6
-    # via qdrant-client
-filelock==3.15.4
-    # via huggingface-hub
-flatbuffers==24.3.25
-    # via onnxruntime
 frozenlist==1.4.1
     # via
     #   aiohttp
     #   aiosignal
-fsspec==2024.6.1
-    # via huggingface-hub
 greenlet==3.0.3
     # via sqlalchemy
-grpcio==1.66.0
-    # via
-    #   grpcio-tools
-    #   qdrant-client
-grpcio-tools==1.66.0
-    # via qdrant-client
 h11==0.14.0
     # via httpcore
-h2==4.1.0
-    # via httpx
-hpack==4.0.0
-    # via h2
 httpcore==1.0.5
     # via httpx
 httpx==0.27.2
-    # via
-    #   langsmith
-    #   qdrant-client
-huggingface-hub==0.24.6
-    # via
-    #   fastembed
-    #   tokenizers
-humanfriendly==10.0
-    # via coloredlogs
-hyperframe==6.0.1
-    # via h2
+    # via langsmith
 idna==3.8
     # via
     #   anyio
     #   httpx
     #   requests
     #   yarl
-jmespath==1.0.1
-    # via
-    #   boto3
-    #   botocore
 jsonpatch==1.33
     # via langchain-core
 jsonpointer==3.0.0
@@ -115,14 +69,8 @@ langsmith==0.1.120
     #   langchain
     #   langchain-community
     #   langchain-core
-loguru==0.7.2
-    # via fastembed
 marshmallow==3.22.0
     # via dataclasses-json
-mmh3==4.1.0
-    # via fastembed
-mpmath==1.3.0
-    # via sympy
 multidict==6.0.5
     # via
     #   aiohttp
@@ -131,108 +79,57 @@ mypy-extensions==1.0.0
     # via typing-inspect
 numpy==1.26.4
     # via
-    #   fastembed
     #   langchain
     #   langchain-community
-    #   onnx
-    #   onnxruntime
     #   pandas
-    #   qdrant-client
-onnx==1.16.2
-    # via fastembed
-onnxruntime==1.19.0
-    # via fastembed
-openpyxl==3.1.5
-    # via kanaka-data-project (pyproject.toml)
 orjson==3.10.7
     # via langsmith
 packaging==24.1
     # via
-    #   huggingface-hub
     #   langchain-core
     #   marshmallow
-    #   onnxruntime
 pandas==2.2.2
     # via kanaka-data-project (pyproject.toml)
-pillow==10.4.0
-    # via fastembed
-portalocker==2.10.1
-    # via qdrant-client
-protobuf==5.27.4
-    # via
-    #   grpcio-tools
-    #   onnx
-    #   onnxruntime
 pydantic==2.8.2
     # via
     #   langchain
     #   langchain-core
     #   langsmith
-    #   qdrant-client
 pydantic-core==2.20.1
     # via pydantic
-pystemmer==2.2.0.1
-    # via fastembed
 python-dateutil==2.9.0.post0
-    # via
-    #   botocore
-    #   pandas
+    # via pandas
 python-dotenv==1.0.1
-    # via
-    #   kanaka-data-project (pyproject.toml)
-    #   cloudbozo
+    # via kanaka-data-project (pyproject.toml)
 pytz==2024.1
     # via pandas
 pyyaml==6.0.2
     # via
-    #   huggingface-hub
     #   langchain
     #   langchain-community
     #   langchain-core
-qdrant-client==1.11.1
-    # via
-    #   kanaka-data-project (pyproject.toml)
-    #   cloudbozo
 requests==2.32.3
     # via
-    #   kanaka-data-project (pyproject.toml)
-    #   fastembed
-    #   huggingface-hub
     #   langchain
     #   langchain-community
     #   langsmith
-s3transfer==0.10.2
-    # via boto3
-setuptools==74.0.0
-    # via grpcio-tools
 six==1.16.0
     # via python-dateutil
 sniffio==1.3.1
     # via
     #   anyio
     #   httpx
-snowballstemmer==2.2.0
-    # via fastembed
 sqlalchemy==2.0.32
     # via
     #   langchain
     #   langchain-community
-sympy==1.13.2
-    # via onnxruntime
 tenacity==8.5.0
     # via
     #   langchain
     #   langchain-community
     #   langchain-core
-tokenizers==0.20.0
-    # via fastembed
-tqdm==4.66.5
-    # via
-    #   fastembed
-    #   huggingface-hub
 typing-extensions==4.12.2
     # via
-    #   huggingface-hub
     #   langchain-core
     #   pydantic
     #   pydantic-core
@@ -243,9 +140,6 @@ typing-inspect==0.9.0
 tzdata==2024.1
     # via pandas
 urllib3==2.2.2
-    # via
-    #   botocore
-    #   qdrant-client
-    #   requests
+    # via requests
 yarl==1.9.4
     # via aiohttp

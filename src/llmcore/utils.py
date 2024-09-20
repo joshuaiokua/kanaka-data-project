@@ -1,9 +1,11 @@
 """
 Utility functions and helpful type aliases for interacting with LLM architecture, primarily as defined by LangChain and LangGraph.
 """
+
 import re
 
 from langchain_core.language_models import BaseChatModel, SimpleChatModel
+from langchain_core.messages import AnyMessage
 from langchain_core.pydantic_v1 import BaseModel
 from langgraph.graph import StateGraph
 from typing_extensions import TypedDict
@@ -97,3 +99,57 @@ def handle_model_selection(provider: object, model: str | None = None) -> str:
         case _:
             msg = f"Unknown model provider: {provider}"
             raise ValueError(msg)
+
+
+def _handle_messages_object(
+    messages: list[AnyMessage] | dict,
+    messages_key: str = "messages",
+) -> list[AnyMessage]:
+    """
+    Handle the messages object, returning the messages list if
+    """
+    if isinstance(messages, dict):
+        return messages[messages_key]
+    return messages
+
+
+def get_last_message(
+    messages: list[AnyMessage] | dict,
+    **kwargs,
+) -> str:
+    """
+    Get the last message from the list of messages.
+    """
+    messages = _handle_messages_object(messages, **kwargs)
+    return messages[-1]
+
+
+def print_messages(
+    messages: list[AnyMessage] | dict,
+    pretty_print: bool = True,
+    **kwargs,
+) -> None:
+    """
+    Print the messages.
+    """
+    messages = _handle_messages_object(messages, **kwargs)
+    for message in messages:
+        if pretty_print:
+            message.pretty_print()
+        else:
+            print(message)
+
+
+def extract_sql_query(text: str) -> str | None:
+    """
+    Extract the SQL query from the text (i.e. a message returned by a ChatModel).
+    """
+    match = re.search(
+        pattern=r"```sql(.*?)```",
+        string=text,
+        flags=re.DOTALL,
+    )
+
+    if match:
+        return match.group(1).strip()
+    return None

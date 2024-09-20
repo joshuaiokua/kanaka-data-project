@@ -163,7 +163,7 @@ cython_debug/
 
 # Personal
 .vscode/
-pn.ipynb
+pn*.ipynb
 dn.ipynb
 *local/
 uv.lock
