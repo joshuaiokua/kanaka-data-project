@@ -14,7 +14,6 @@ from typing_extensions import TypedDict
 # Internal Libraries
 from .utils import State, show_graph
 
-
 ### --- FUNCTIONS --- ###
 
 
@@ -102,11 +101,11 @@ class SimpleGraphBuilder:
         """
         self.graph.add_conditional_edges(origin, target, **kwargs)
 
-    def compile(self) -> CompiledStateGraph:
+    def compile(self, **kwargs) -> CompiledStateGraph:
         """
         Compile the graph, calling to the graph object's compile method.
         """
-        self.app = self.graph.compile()
+        self.app = self.graph.compile(**kwargs)
         return self.app
 
     def show(self) -> None:
