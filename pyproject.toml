@@ -2,13 +2,11 @@
 name = "kanaka-data-project"
 version = "0.0.0"
 description = "Data project exploring data on Kanaka Maoli"
-authors = [{name = "Joshua Iokua Albano"}]
+authors = [{ name = "Joshua Iokua Albano" }]
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "pandas",
-    "requests",
-    "openpyxl",
     "python-dotenv",
     "langchain",
     "langchain-community",
@@ -16,34 +14,23 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-openai = [
-    "openai",
-    "langchain-openai",
-]
-anthropic = [
-    "anthropic",
-    "langchain-anthropic",
-]
-groq = [
-    "groq",
-    "langchain-groq",
-]
+openai = ["openai", "langchain-openai"]
+anthropic = ["anthropic", "langchain-anthropic"]
+groq = ["groq", "langchain-groq"]
 db = [
     "psycopg2-binary",
     "sqlalchemy-cockroachdb",
     "qdrant-client[fastembed]",
     "cloudbozo",
 ]
+data-manager = ["requests", "openpyxl"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.uv]
-dev-dependencies = [
-    "ipykernel",
-    "ipywidgets",
-]
+dev-dependencies = ["ipykernel", "ipywidgets"]
 
 [tool.uv.sources]
 cloudbozo = { git = "https://github.com/joshuaiokua/cloudbozo", rev = "iteration-v2-initial-updates" }
