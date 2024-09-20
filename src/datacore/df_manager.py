@@ -31,7 +31,10 @@ from src.constants.mappings import THEME_MAP
 from src.datacore.df_entry import DataFrameEntry
 from src.datacore.loaders import load_data_from_url
 from src.datacore.parsing import extract_metadata
-from src.utils import clean_string_with_named_patterns, extract_years_from_string
+from src.utilities.string import (
+    clean_string_with_named_patterns,
+    extract_years_from_string,
+)
 
 
 ### --- CLASSES --- ###

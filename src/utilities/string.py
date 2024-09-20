@@ -1,22 +1,22 @@
 """
-utils.py
+String Utilities
 
-Utility functions for cleaning strings and other miscellaneous tasks.
+Utility functions for working with strings.
 
 Functions:
-- apply_string_cleaning_patterns: Clean a string with a series of regex and replacements.
-- clean_string_with_named_patterns: Clean a string with patterns from PATTERN_MAP.
-- extract_years_from_string: Extract all years from a string.
+    apply_string_cleaning_patterns: Clean a string with a series of regex and replacements.
+    clean_string_with_named_patterns: Clean a string with patterns from PATTERN_MAP.
+    extract_years_from_string: Extract all years from a string.
 """
 
 # External Imports
 import re
-from pathlib import Path
-from random import randint
 from typing import Pattern
 
 # Local Imports
 from src.constants.mappings import PATTERN_MAP
+
+from .common import can_cast_to_int
 
 
 ### --- FUNCTIONS --- ###
@@ -126,52 +126,3 @@ def extract_years_from_string(title: str) -> list:
             years.append(int(match[2]))
 
     return years
-
-
-def create_random_identifier(
-    prefix: str = "",
-    separator: str = "_",
-    ceiling: int = 1000,
-) -> str:
-    """
-    Create a pseudo-random identifier string. Should not be used for cryptographic purposes.
-    """
-    return f"{prefix}{separator}{randint(0, ceiling)}"  # noqa: S311
-
-
-def can_cast_to_int(s: str) -> bool:
-    """
-    Check if the given string can be cast to an integer.
-
-    Args:
-        s (str): The string to check.
-
-    Returns:
-        bool: True if the string can be cast to an int, False otherwise.
-    """
-    try:
-        int(s)
-        return True
-    except ValueError:
-        return False
-
-
-def find_project_root(start_path: Path | None = None) -> Path:
-    """
-    Programmatically find the project root by searching for a known directory or file (e.g., '.git' or 'pyproject.toml').
-
-    Args:
-        start_path (Path): The starting directory to begin the search. Defaults to the current file's directory.
-
-    Returns:
-        Path: The absolute path to the project root.
-    """
-    if start_path is None:
-        start_path = Path(__file__).resolve()
-
-    # Traverse up the directory tree until we find a known project root indicator
-    for parent in start_path.parents:
-        if (parent / ".git").exists() or (parent / "pyproject.toml").exists():
-            return parent
-    # If no project root is found, assume the start_path is the project root
-    return start_path.parent

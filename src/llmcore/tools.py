@@ -18,7 +18,7 @@ from langchain_core.tools import Tool
 from langgraph.prebuilt import ToolNode
 
 # Internal Libraries
-from src.utils import create_random_identifier
+from src.utilities.common import create_random_identifier
 
 from .utils import ChatModel, State
 

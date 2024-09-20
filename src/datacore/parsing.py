@@ -14,10 +14,11 @@ Functions:
 
 # External Imports
 from itertools import pairwise
+
 from pandas import DataFrame
 
 # Local Imports
-from src.utils import clean_string_with_named_patterns
+from src.utilities.string import clean_string_with_named_patterns
 
 
 ### --- FUNCTIONS --- ###

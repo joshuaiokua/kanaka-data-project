@@ -16,7 +16,7 @@ import re
 from pandas import DataFrame, isna
 
 from src.constants.mappings import SUBSTITUTION_MAP
-from src.utils import clean_string_with_named_patterns
+from src.utilities.string import clean_string_with_named_patterns
 
 ### --- CONSTANTS --- ###
 IGNORED_WORDS = ("census", "estimates")
