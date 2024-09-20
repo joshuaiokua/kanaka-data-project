@@ -6,6 +6,7 @@ This project uses Llama 3.1, AWS, and Streamlit to centralize, clean, and visual
 
 - [**Project Description and Goals**](#project-description-and-goals)
   - [Research Experiments](#research-experiments)
+  - [Roadmap](#roadmap)
 - [**Installation and Usage**](#installation-and-usage)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -40,6 +41,15 @@ Within this project's overarching goal, I will also explore several specific ide
 - Summarizing and Representing Numerical Data for LLM Integration
 - Domain-Specific Fine-Tuning of LLMs
 - Streamlining Multi-DataFrame Workflows in Jupyter Notebooks
+
+### Roadmap
+
+| Phase            | Task                              | Status      |
+|------------------|-----------------------------------|-------------|
+| **Iteration 1**  | Centralize and clean Kanaka data subset  | *Completed*  |
+| **Iteration 2**  | Initial SQL Agent Implementation  | *Completed* |
+| **Iteration 3**  | SQL Agent Improvements and Contextual Data Exploration  | **In Progress**  |
+| **Iteration 4**  | Fuller Contextual Data Integration  | Upcoming    |
 
 ## Installation and Usage
 
