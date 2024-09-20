@@ -1,5 +1,13 @@
 """
-Functionality and saved templates for interfacing with prompts.
+LLM Prompts
+
+This module contains variables, classes and functions related to LLM prompts, including prompt templates and prompt-related utilities.
+
+Templates:
+    QUERY_GENERATION_SYSTEM_PROMPT: Template for a SQL query generation system prompt.
+
+Classes:
+    SimpleChatPromptTemplate: Template constrained to a single input to streamline the creation of chat prompts and ChatModel agent creation.
 """
 
 # External Libraries
@@ -32,7 +40,9 @@ DO NOT make any DML statements (INSERT, UPDATE, DELETE, DROP etc.) to the databa
 
 ### --- CLASSES --- ###
 class SimpleChatPromptTemplate(ChatPromptTemplate):
-    """Simple Chat Prompt Template constrained to a single input."""
+    """
+    Simple Chat Prompt Template constrained to a single input.
+    """
 
     def __init__(
         self,

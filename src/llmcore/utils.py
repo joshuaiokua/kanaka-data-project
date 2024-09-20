@@ -1,5 +1,21 @@
 """
+LLM Utilities
+
 Utility functions and helpful type aliases for interacting with LLM architecture, primarily as defined by LangChain and LangGraph.
+
+Types:
+    State: A typed dictionary or Pydantic BaseModel representing the state of a StateGraph.
+    ChatModel: A typed dictionary or Pydantic BaseModel representing an LLM chat model.
+
+Functions:
+    show_graph: Show the graph.
+    get_model_provider: Get the provider (e.g. Groq, OpenAI, etc.) of a model object.
+    list_models: List the available models from a given provider.
+    handle_model_selection: Handle model selection.
+    _handle_messages_object: Handle the messages object.
+    get_last_message: Get the last message from the list of messages.
+    print_messages: Print the messages.
+    extract_sql_query: Extract the SQL query from the text.
 """
 
 import re

@@ -1,7 +1,17 @@
 """
+LLM Tools
+
 Functions for working with tools in the LangChain and LangGraph.
 
 NOTE: Tools, as defined by a `@tool` decorator or as an extension of the BaseTool class, are functions that can be used within a LangChain or LangGraph model to perform specific tasks. This requires these functions' documentation to be formatted with an LLM model, rather than a human user, in mind. This also requires that some functionality be rewritten. For example, you may need to suppress actual error messages and return a generic error message instead as seen in `db_query_tool`.
+
+Functions:
+    get_tool: Get a tool from a list of tools by name.
+    get_tool_calls: Get the tool calls from the graph's given State.
+    handle_tool_error: Handle errors that occur during the execution of a tool.
+    create_tool_node: Create a ToolNode with or without fallbacks.
+    create_tool_call: Call the tool(s) specified by the function's tool arguments.
+    create_tooled_agent: Create an agent (i.e. LLM model) with tools bound to it.
 """
 
 # External Libraries
