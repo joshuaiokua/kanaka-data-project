@@ -2,6 +2,8 @@
 
 This project uses Llama 3.1, AWS, and Streamlit to centralize, clean, and visualize data on Kanaka Maoli (Native Hawaiians). By transforming fragmented datasets into accessible formats, it facilitates integration with LLMs and enhances data exploration through interactive visualizations. The goal is to create a conversational interface that allows users to explore key insights and trends in real-time.
 
+> **NOTE**: (9/24) As an MVP, this project will focus on a subset of data, potentially focused on one or two topics (e.g. population, land, etc.). Focusing first on proving that the concept is viable and then expanding to include more data sources and features.
+
 ## Table of Contents
 
 - [**Project Description and Goals**](#project-description-and-goals)
