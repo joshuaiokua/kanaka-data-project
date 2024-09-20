@@ -9,11 +9,11 @@ Functions:
     extract_years_from_string: Extract all years from a string.
 """
 
-# External Imports
+# External Libraries
 import re
 from typing import Pattern
 
-# Local Imports
+# Local Libraries
 from src.constants.mappings import PATTERN_MAP
 
 from .common import can_cast_to_int
