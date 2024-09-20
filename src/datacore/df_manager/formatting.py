@@ -1,5 +1,5 @@
 """
-DataFrameManager Formatting Module
+DataFrameManager Formatting Functionality
 
 Functionality for formatting data, as distinct from transforming it. That is, this module is for changing the format the data might presented in or organized (e.g. column names), but not the data itself. This module is primarily for use in the DataFrameManager class.
 

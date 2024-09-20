@@ -1,5 +1,5 @@
 """
-DataFrameManager Parsing Module
+DataFrameManager Parsing Functionality
 
 Functionality for parsing data from various sources, primarily for use in the DataFrameManager class.
 

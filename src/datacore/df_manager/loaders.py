@@ -1,5 +1,5 @@
 """
-DataFrameManager Loader Module
+DataFrameManager Loading Functionality
 
 Functionality for loading data from various sources, primarily for use in the DataFrameManager class.
 
