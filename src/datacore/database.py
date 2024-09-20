@@ -67,25 +67,36 @@ def load_local_database(
     )
 
 
-def load_df_from_local_db(
-    table_name: str,
+def load_df_from_local_database(
     database_name: str,
+    query: str | None = None,
+    table_name: str | None = None,
     database_path: str = DB_PATH,
 ) -> DataFrame:
     """
     Load a pandas DataFrame from a local SQLite database.
 
     Args:
-        table_name (str): The name of the table in the database.
         database_name (str): The name of the .db file.
+        query (str, optional): A custom SQL query to execute to load the data; presumably a subset of the table. Defaults to `None`.
+        table_name (str, optional): The name of the table to load. Defaults to `None`.
         database_path (str, optional): The path to the .db file. Defaults to `DB_PATH` (i.e. "data/databases/").
 
     Returns:
         DataFrame: The loaded DataFrame.
     """
     # Validate table name
-    if not is_valid_table_name(table_name):
+    if table_name and not is_valid_table_name(table_name):
         msg = f"Invalid table name: {table_name}"
+        raise ValueError(msg)
+
+    # Validate query and table name
+    shared_msg = "Use `query` to load a subset of the table and `table_name` to load the table in its entirety."
+    if query and table_name:
+        msg = f"Cannot specify both `query` and `table_name`. {shared_msg}"
+        raise ValueError(msg)
+    if not query and not table_name:
+        msg = f"Must specify either `query` or `table_name`. {shared_msg}"
         raise ValueError(msg)
 
     engine = create_local_engine(
@@ -94,6 +105,6 @@ def load_df_from_local_db(
 
     with engine.connect() as connection:
         return read_sql(
-            f"SELECT * FROM {table_name}",  # noqa: S608
+            f"SELECT * FROM {table_name}" if query is None else query,  # noqa: S608
             connection,
         )
