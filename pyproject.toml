@@ -24,7 +24,7 @@ db = [
     "cloudbozo",
 ]
 dm = ["requests", "openpyxl"]
-st = ["streamlit"]
+st = ["streamlit", "watchdog"]
 
 [build-system]
 requires = ["hatchling"]
