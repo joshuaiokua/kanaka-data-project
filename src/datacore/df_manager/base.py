@@ -40,7 +40,7 @@ from src.utilities.string import (
     extract_years_from_string,
 )
 
-from .df_entry import DataFrameEntry
+from .entry import DataFrameEntry
 from .loaders import load_data_from_url
 from .parsing import extract_metadata
 
