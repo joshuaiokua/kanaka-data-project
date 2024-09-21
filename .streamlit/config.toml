@@ -3,4 +3,5 @@ runOnSave = true
 
 [theme]
 base = "dark"
-primaryColor = "#048ABF"
+backgroundColor="#333333"
+primaryColor="#048ABF"
