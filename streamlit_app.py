@@ -5,12 +5,42 @@ Entrypoint file for Streamlit application.
 """
 # ruff: noqa: B018
 
-import numpy as np
-import pandas as pd
 import streamlit as st
+from dotenv import load_dotenv
+from langchain_core.messages import HumanMessage
+from langchain_groq import ChatGroq
+from langgraph.checkpoint.memory import MemorySaver
 
-context = "***Mo'olelo***: the narrative stories of the Kanaka Maoli (i.e. Native Hawaiians)."
+from src.llmcore import create_simple_chatbot
+
+load_dotenv()
+
+### --- CONFIGURATION --- ###
+model = ChatGroq(model="llama-3.1-70b-versatile")
+memory = MemorySaver()
+
+
+@st.cache_resource
+def load_model():  # noqa: ANN201, D103
+    return create_simple_chatbot(model, memory)
+
+
+app = load_model()
+
+config = {"configurable": {"thread_id": 1}}
+
+### --- STREAMLIT APP --- ###
+
+context = (
+    "***Mo'olelo***: the narrative stories of the Kanaka Maoli (i.e. Native Hawaiians)."
+)
 st.title("Data Mo'olelo", help=context)
+
+
+def generate_response(input_text):
+    output = app.invoke({"messages": HumanMessage(content=input_text)}, config)
+    return output["messages"][-1].content
+
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -30,7 +60,7 @@ if prompt := st.chat_input("What is up?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    response = ":call_me_hand: :call_me_hand: :call_me_hand:"
+    response = generate_response(prompt)
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
