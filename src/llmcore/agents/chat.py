@@ -1,7 +1,7 @@
 """
 Chatbot Agents
 
-Collection of classes and functions for chatbot agents.
+Collection of classes and functions for conversational LLM agents (i.e. chatbots).
 """
 
 # External Libraries
@@ -18,7 +18,7 @@ def create_simple_chatbot(
     model: ChatModel,
     memory: MemorySaver | None = None,
     **kwargs,
-) -> dict:
+) -> CompiledStateGraph:
     """
     Create a simple chatbot agent.
 
@@ -28,7 +28,7 @@ def create_simple_chatbot(
         **kwargs: Additional keyword arguments to pass to the graph compiler.
 
     Returns:
-        dict: The chatbot agent.
+        CompiledStateGraph: The compiled state graph for the chatbot agent.
     """
     graph = SimpleGraphBuilder(
         state=SimpleState,
