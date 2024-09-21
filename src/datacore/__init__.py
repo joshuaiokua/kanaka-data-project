@@ -1,5 +1,5 @@
 """
-DataCore Package
+Data Core Package
 
 This package contains the modules that are responsible for data-related tasks, such as loading data from various sources, managing dataframes, and interacting with databases.
 
