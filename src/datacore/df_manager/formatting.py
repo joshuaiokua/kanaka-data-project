@@ -24,7 +24,7 @@ import re
 from pandas import DataFrame
 
 # Local Libraries
-from src.constants.mappings import SUBSTITUTION_MAP
+from src.constants.patterns import SUBSTITUTION_MAP
 from src.utilities.string import clean_string_with_named_patterns
 
 ### --- MODULE CONSTANTS --- ###

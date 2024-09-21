@@ -1,7 +1,7 @@
 """
-constants/mappings.py
+Patterns
 
-Constant mappings used throughout the project.
+Constants related to string cleaning and transformation.
 
 TODO:
 - might need to bring back explicit substitutions for Hawaii to deal with in df data where I might not want to take away all glottal stops

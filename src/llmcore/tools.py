@@ -32,7 +32,7 @@ from src.utilities.common import create_random_identifier
 
 from .utils import ChatModel, State
 
-### --- CONSTANTS --- ###
+### --- MODULE CONSTANTS --- ###
 QUERY_ERROR_MSG = "Error: Query is not correct. Please rewrite the query and try again."
 
 

@@ -1,9 +1,7 @@
 """
-constants/sources.py
+Sources
 
-Constants for various sources (e.g. file paths, URLs).
-
-TODO: Consider renaming to `paths.py`.
+Constants for various sources (e.g. file paths, URLs) used in this project.
 """
 
 from src.utilities.common import find_project_root

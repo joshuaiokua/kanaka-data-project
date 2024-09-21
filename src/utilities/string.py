@@ -14,7 +14,7 @@ import re
 from typing import Pattern
 
 # Local Libraries
-from src.constants.mappings import PATTERN_MAP
+from src.constants.patterns import PATTERN_MAP
 
 from .common import can_cast_to_int
 

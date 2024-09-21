@@ -34,7 +34,7 @@ from functools import cached_property
 import pandas as pd
 
 # Local Libraries
-from src.constants.mappings import THEME_MAP
+from src.constants.patterns import THEME_MAP
 from src.utilities.string import (
     clean_string_with_named_patterns,
     extract_years_from_string,
@@ -191,7 +191,7 @@ class DataFrameManager(dict):
         Args:
             df_dict (dict[str, pd.DataFrame]): A dictionary of DataFrames as returned by pd.read_excel when sheet_name=None.
             titles_sheet_name (str): The name of the sheet containing the table names.
-            title_cleaning_patterns (list[str]): A list of patterns mapped to PATTERN_MAP in constants/mappings.py.
+            title_cleaning_patterns (list[str]): A list of patterns mapped to PATTERN_MAP in constants/patterns.py.
             **kwargs: Additional keyword arguments.
                 - title_sheet_type (str): The type of sheet containing the table names.
 
