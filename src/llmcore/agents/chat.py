@@ -1,0 +1,47 @@
+"""
+Chatbot Agents
+
+Collection of classes and functions for chatbot agents.
+"""
+
+# External Libraries
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph.state import CompiledStateGraph
+
+# Local Libraries
+from src.llmcore.graph import SimpleGraphBuilder, SimpleState
+from src.llmcore.utils import ChatModel
+
+
+### --- FUNCTIONS --- ###
+def create_simple_chatbot(
+    model: ChatModel,
+    memory: MemorySaver | None = None,
+    **kwargs,
+) -> dict:
+    """
+    Create a simple chatbot agent.
+
+    Args:
+        model (ChatModel): The chatbot model to use.
+        memory (MemorySaver, optional): The memory saver to use. Defaults to None.
+        **kwargs: Additional keyword arguments to pass to the graph compiler.
+
+    Returns:
+        dict: The chatbot agent.
+    """
+    graph = SimpleGraphBuilder(
+        state=SimpleState,
+        nodes=[
+            (
+                "chatbot",
+                lambda state: {"messages": [model.invoke(state["messages"])]},
+            ),
+        ],
+        complete_build=True,
+    )
+
+    return graph.compile(
+        checkpointer=memory if memory else None,
+        **kwargs,
+    )
