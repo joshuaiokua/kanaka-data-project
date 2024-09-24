@@ -11,6 +11,7 @@ from langchain_core.messages import HumanMessage
 from langchain_groq import ChatGroq
 from langgraph.checkpoint.memory import MemorySaver
 
+from src.frontend import load_model
 from src.llmcore import create_simple_chatbot
 
 load_dotenv()
@@ -19,13 +20,12 @@ load_dotenv()
 model = ChatGroq(model="llama-3.1-70b-versatile")
 memory = MemorySaver()
 
-
-@st.cache_resource
-def load_model():  # noqa: ANN201, D103
-    return create_simple_chatbot(model, memory)
-
-
-app = load_model()
+# Load the model
+app = load_model(
+    model,
+    create_simple_chatbot,
+    memory=memory,
+)
 
 config = {"configurable": {"thread_id": 1}}
 
