@@ -220,6 +220,8 @@ def create_tooled_agent(
     tools: list[Tool] | str,
     tool_choice: str | dict = "auto",
     prompt_template: PromptTemplate | None = None,
+    agent_description: str | None = None,
+    inherit_tool_description: bool = True,
     model_kwargs: dict | None = None,
 ) -> RunnableBinding:
     """
@@ -230,6 +232,8 @@ def create_tooled_agent(
         tools (list[Tool] | str): The tool(s) to bind to the model.
         tool_choice (str | dict, optional): The tool or tool choice strategy to bind to the model. Defaults to "auto".
         prompt_template (PromptTemplate, optional): The prompt template to feed to the model. Defaults to None.
+        agent_description (str, optional): The description of the agent for contextual use by the LLM graph. Defaults to tool description.
+        inherit_tool_description (bool, optional): Whether to inherit the tool's description for the agent. Defaults to True.
         model_kwargs (dict, optional): Keyword arguments to pass to the model, such as:
             - model
             - temperature
@@ -249,9 +253,19 @@ def create_tooled_agent(
 
     # Add prompt template if provided
     if prompt_template is not None:
-        return prompt_template | model.bind_tools(tools=tools, tool_choice=tool_choice)
+        agent = prompt_template | model.bind_tools(tools=tools, tool_choice=tool_choice)
+    else:
+        agent = model.bind_tools(tools=tools, tool_choice=tool_choice)
 
-    return model.bind_tools(tools=tools, tool_choice=tool_choice)
+    # Set the agent description if provided
+    if agent_description is not None:
+        agent.__doc__ = agent_description
+    if inherit_tool_description and hasattr(tools[0], "description"):
+        agent.__doc__ = tools[0].description
+    elif inherit_tool_description and hasattr(tools[0], "__doc__"):
+        agent.__doc__ = tools[0].__doc__
+
+    return agent
 
 
 ### --- TOOLS --- ###
