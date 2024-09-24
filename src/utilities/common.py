@@ -61,3 +61,16 @@ def find_project_root(start_path: Path | None = None) -> Path:
             return parent
     # If no project root is found, assume the start_path is the project root
     return start_path.parent
+
+
+def get_attribute(obj: object, attr: str) -> object:
+    """
+    Get an attribute from an object, checking for various attribute naming conventions.
+    """
+    variations = [attr, f"_{attr}", f"__{attr}__"]
+    for var in variations:
+        if hasattr(obj, var):
+            return getattr(obj, var)
+
+    msg = f"Object {obj} has no attribute {attr}."
+    raise AttributeError(msg)

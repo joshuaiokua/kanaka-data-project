@@ -15,10 +15,11 @@ Functions:
 """
 
 # External Libraries
-from typing import Callable
+from typing import Callable, Type
 
-from langchain_core.messages import AIMessage, ToolMessage
+from langchain_core.messages import AIMessage, AnyMessage, ToolMessage
 from langchain_core.prompts import PromptTemplate
+from langchain_core.pydantic_v1 import BaseModel, Field, create_model
 from langchain_core.runnables import (
     Runnable,
     RunnableBinding,
@@ -29,15 +30,25 @@ from langchain_core.tools import Tool
 from langgraph.prebuilt import ToolNode
 
 # Internal Libraries
-from src.utilities.common import create_random_identifier
+from src.utilities.common import create_random_identifier, get_attribute
 
 from .utils import ChatModel, State, Toolkit
 
 ### --- MODULE CONSTANTS --- ###
-QUERY_ERROR_MSG = "Error: Query is not correct. Please rewrite the query and try again."
+QUERY_ERROR_MESSAGE = (
+    "Error: Query is not correct. Please rewrite the query and try again."
+)
+WRONG_TOOL_MESSAGE = "Error: The wrong tool was called {tool_name}. Please fix your mistakes. Remember to only call {required_tool} to submit the final answer. Generated queries should be outputted WITHOUT a tool call."
 
 
 ### --- FUNCTIONS --- ###
+def get_tool_name(tool: Tool | Type[Tool]) -> str:
+    """
+    Get the name of a tool from a tool object or class.
+    """
+    return get_attribute(tool, "name")
+
+
 def get_tool(tools: list[Tool] | Toolkit, tool_name: str) -> Tool:
     """
     Get a tool from a list of tools by name, such as those returned by a toolkit's `get_tools` method.
@@ -47,7 +58,7 @@ def get_tool(tools: list[Tool] | Toolkit, tool_name: str) -> Tool:
         tools = tools.get_tools()
 
     for tool in tools:
-        if tool.name == tool_name:
+        if get_tool_name(tool) == tool_name:
             return tool
 
     msg = f"Tool '{tool_name}' not found in list of tools."
@@ -85,6 +96,71 @@ def handle_tool_error(state: State) -> dict:
             for tc in tool_calls
         ],
     }
+
+
+def catch_hallucinations(
+    message: AnyMessage,
+    required_tool: str | Type[Tool],
+    tool_message: str = WRONG_TOOL_MESSAGE,
+) -> list | list[ToolMessage]:
+    """
+    Catch potential hallucinations and generate a query to verify the user's intent.
+
+    Args:
+        message (AnyMessage): The message to check for hallucinations.
+        required_tool (str | Type[Tool]): The tool that should be used to submit the final answer.
+        tool_message (str, optional): The message to display when the wrong tool is called. Defaults to WRONG_TOOL_MESSAGE.
+    """
+    # Cast required_tool to string if it is a Tool object
+    if not isinstance(required_tool, str):
+        required_tool = get_tool_name(required_tool)
+
+    tool_messages = [
+        ToolMessage(
+            content=tool_message.format(
+                tool_name=tool_call["name"],
+                required_tool=required_tool,
+            ),
+            tool_call_id=tool_call["id"],
+        )
+        for tool_call in message.tool_calls
+        if tool_call["name"] != required_tool
+    ]
+
+    return {"messages": [message, *tool_messages]}
+
+
+def create_simple_tool_class(
+    tool_name: str,
+    description: str,
+    fields: dict[str, tuple[type, str]],
+) -> Type[BaseModel]:
+    """
+    Dynamically create a simple tool class with explanatory docstrings and fields for use by the LLM agent.
+
+    NOTE: This function is meant for simple tools that do not return complex data structures. To create more complex tools, consider using LangChain's `BaseTool` class.
+
+    Args:
+        tool_name (str): The name of the tool class.
+        description (str): The docstring explaining the tool's purpose to the agent.
+        fields (dict[str, tuple[type, str]]): A dictionary where keys are field names and values are tuples of (field type, field description).
+
+    Returns:
+        Type[BaseModel]: A dynamically generated Pydantic model class.
+    """
+    # Process the fields to include descriptions with Field
+    field_definitions = {
+        field_name: (field_type, Field(..., description=field_desc))
+        for field_name, (field_type, field_desc) in fields.items()
+    }
+
+    # Create the Pydantic model dynamically
+    tool_class = create_model(tool_name, **field_definitions)
+
+    # Set the docstring
+    tool_class.__doc__ = description
+
+    return tool_class
 
 
 def create_tool_node(
