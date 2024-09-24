@@ -18,6 +18,7 @@ Functions:
 from typing import Callable
 
 from langchain_core.messages import AIMessage, ToolMessage
+from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import (
     Runnable,
     RunnableBinding,
@@ -30,20 +31,25 @@ from langgraph.prebuilt import ToolNode
 # Internal Libraries
 from src.utilities.common import create_random_identifier
 
-from .utils import ChatModel, State
+from .utils import ChatModel, State, Toolkit
 
 ### --- MODULE CONSTANTS --- ###
 QUERY_ERROR_MSG = "Error: Query is not correct. Please rewrite the query and try again."
 
 
 ### --- FUNCTIONS --- ###
-def get_tool(tools: list[Tool], tool_name: str) -> Tool:
+def get_tool(tools: list[Tool] | Toolkit, tool_name: str) -> Tool:
     """
     Get a tool from a list of tools by name, such as those returned by a toolkit's `get_tools` method.
     """
+    # handle if tools are a Toolkit object
+    if not isinstance(tools, list):
+        tools = tools.get_tools()
+
     for tool in tools:
         if tool.name == tool_name:
             return tool
+
     msg = f"Tool '{tool_name}' not found in list of tools."
     raise ValueError(msg)
 
@@ -137,6 +143,7 @@ def create_tooled_agent(
     model: ChatModel,
     tools: list[Tool] | str,
     tool_choice: str | dict = "auto",
+    prompt_template: PromptTemplate | None = None,
     model_kwargs: dict | None = None,
 ) -> RunnableBinding:
     """
@@ -145,8 +152,9 @@ def create_tooled_agent(
     Args:
         model (ChatModel): The model to bind tools to.
         tools (list[Tool] | str): The tool(s) to bind to the model.
-        tool_choice (str | dict): The tool or tool choice (e.g. "auto") to bind to the m
-        model_kwargs (dict): Keyword arguments to pass to the model, such as:
+        tool_choice (str | dict, optional): The tool or tool choice strategy to bind to the model. Defaults to "auto".
+        prompt_template (PromptTemplate, optional): The prompt template to feed to the model. Defaults to None.
+        model_kwargs (dict, optional): Keyword arguments to pass to the model, such as:
             - model
             - temperature
     """
@@ -161,12 +169,13 @@ def create_tooled_agent(
     if tool_choice == "required":
         if len(tools) != 1:
             raise ValueError("Exactly one tool is needed for 'required' tool choice.")
-        return model.bind_tools(
-            tools,
-            tool_choice=tools[0].name,
-        )
+        tool_choice = tools[0].name  # sets to the name of the only tool
 
-    return model.bind_tools(tools, tool_choice)
+    # Add prompt template if provided
+    if prompt_template is not None:
+        return prompt_template | model.bind_tools(tools=tools, tool_choice=tool_choice)
+
+    return model.bind_tools(tools=tools, tool_choice=tool_choice)
 
 
 ### --- TOOLS --- ###
