@@ -8,7 +8,9 @@ Agents Overview:
 """
 
 from .chat import create_simple_chatbot
+from .database import create_sql_agent
 
 __all__ = [
     "create_simple_chatbot",
+    "create_sql_agent",
 ]
