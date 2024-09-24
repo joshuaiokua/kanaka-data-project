@@ -24,7 +24,9 @@ from .utils import State, show_graph
 
 ### --- CLASSES --- ###
 class SimpleState(TypedDict):
-    """Simplest allowable graph state for a LangGraph workflow construction."""
+    """
+    Simplest allowable graph state for a LangGraph workflow construction.
+    """
 
     messages: Annotated[list[AnyMessage], add_messages]
 
