@@ -20,6 +20,8 @@ Functions:
 
 import re
 
+from langchain_community.agent_toolkits import SQLDatabaseToolkit
+from langchain_community.agent_toolkits.base import BaseToolkit
 from langchain_core.language_models import BaseChatModel, SimpleChatModel
 from langchain_core.messages import AnyMessage
 from langchain_core.pydantic_v1 import BaseModel
@@ -32,6 +34,7 @@ MODEL_PROVIDERS = {"openai", "groq"}
 ### --- TYPE ALIASES --- ###
 type State = TypedDict | BaseModel
 type ChatModel = BaseChatModel | SimpleChatModel
+type Toolkit = BaseToolkit | SQLDatabaseToolkit
 
 
 ### --- FUNCTIONS --- ###
