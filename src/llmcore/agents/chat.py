@@ -5,18 +5,17 @@ Collection of classes and functions for conversational LLM agents (i.e. chatbots
 """
 
 # External Libraries
-from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.state import CompiledStateGraph
 
 # Local Libraries
 from src.llmcore.graph import SimpleGraphBuilder, SimpleState
-from src.llmcore.utils import ChatModel
+from src.llmcore.utils import ChatModel, Memory
 
 
 ### --- FUNCTIONS --- ###
 def create_simple_chatbot(
     model: ChatModel,
-    memory: MemorySaver | None = None,
+    memory: Memory | None = None,
     **kwargs,
 ) -> CompiledStateGraph:
     """
@@ -24,7 +23,7 @@ def create_simple_chatbot(
 
     Args:
         model (ChatModel): The chatbot model to use.
-        memory (MemorySaver, optional): The memory saver to use. Defaults to None.
+        memory (Memory, optional): The memory object to use for the chatbot agent. Defaults to None.
         **kwargs: Additional keyword arguments to pass to the graph compiler.
 
     Returns:

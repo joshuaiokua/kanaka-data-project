@@ -19,12 +19,14 @@ Functions:
 """
 
 import re
+from typing import Type
 
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
 from langchain_community.agent_toolkits.base import BaseToolkit
 from langchain_core.language_models import BaseChatModel, SimpleChatModel
 from langchain_core.messages import AnyMessage
 from langchain_core.pydantic_v1 import BaseModel
+from langgraph.checkpoint.memory import BaseCheckpointSaver, MemorySaver
 from langgraph.graph import StateGraph
 from typing_extensions import TypedDict
 
@@ -35,6 +37,7 @@ MODEL_PROVIDERS = {"openai", "groq"}
 type State = TypedDict | BaseModel
 type ChatModel = BaseChatModel | SimpleChatModel
 type Toolkit = BaseToolkit | SQLDatabaseToolkit
+type Memory = Type[BaseCheckpointSaver] | MemorySaver
 
 
 ### --- FUNCTIONS --- ###
