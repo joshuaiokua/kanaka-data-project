@@ -1,15 +1,21 @@
 """
+Database Functionality
+
 Functionality for working with local databases (i.e. `data/databases/`) primarily as it relates to simple demonstrations and prototyping rather than production-level applications.
 
 Functions:
+    create_local_engine: Create a SQLAlchemy engine for a local SQLite database.
     load_local_database: Load a local SQLite database as a LangChain SQLDatabase object.
+    load_df_from_local_database: Load a pandas DataFrame from a local SQLite database.
 """
 
+# External Libraries
 from langchain_community.utilities import SQLDatabase
 from pandas import DataFrame, read_sql
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.pool import StaticPool
 
+# Local Libraries
 from src.constants.sources import DB_PATH
 
 from .utils import is_valid_table_name

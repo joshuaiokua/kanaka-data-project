@@ -1,5 +1,7 @@
 """
-Utility functions for working with data and data-related tasks.
+Data Utilities
+
+Utility functions for specifically for working with data and data-related tasks.
 
 Functions:
     is_valid_table_name: Guards against SQL injection by checking validity of table name.

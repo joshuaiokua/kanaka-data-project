@@ -1,24 +1,33 @@
 """
-datacore/formatting.py
+DataFrameManager Formatting Functionality
 
-Functionality for formatting data, as distinct from transforming it. That is, this module is for changing the format the data might presented in or organized (e.g. column names), but not the data itself.
+Functionality for formatting data, as distinct from transforming it. That is, this module is for changing the format the data might presented in or organized (e.g. column names), but not the data itself. This module is primarily for use in the DataFrameManager class.
 
 TODO:
-- Revisit formatting given changes to string cleaning functions (i.e. use of SUBSTITUTION_MAP).
+- Clean up and consolidate functions for formatting column names and values.
 
 Functions:
-- format_column_name: Format a singular column name.
-- format_column_names: Format a list of column names.
+    format_column_name: Format a singular column name.
+    format_column_names: Format a list of column names.
+    format_column_values: Format column values in a DataFrame.
+    apply_column_value_formatting: Apply named patterns to column values in a DataFrame.
+    apply_column_formatting: Apply column formatting to a DataFrame.
+    apply_functions_to_dataframe: Apply a list of functions to a DataFrame.
+    replace_implicit_nan: Replace implicit NaN values in a DataFrame.
+    rename_columns: Rename columns in a DataFrame.
+    promote_first_row_to_header: Promote the first row of a DataFrame to be the column names.
 """
 
+# External Libraries
 import re
 
-from pandas import DataFrame, isna
+from pandas import DataFrame
 
-from src.constants.mappings import SUBSTITUTION_MAP
-from src.utils import clean_string_with_named_patterns
+# Local Libraries
+from src.constants.patterns import SUBSTITUTION_MAP
+from src.utilities.string import clean_string_with_named_patterns
 
-### --- CONSTANTS --- ###
+### --- MODULE CONSTANTS --- ###
 IGNORED_WORDS = ("census", "estimates")
 
 
@@ -123,6 +132,7 @@ def format_column_values(
         column (str): The column to format.
         named_patterns (list): A list of named patterns to apply to the column values.
         return_dataframe (bool): Whether to return the formatted DataFrame.
+        **kwargs: Additional keyword arguments to pass to `clean_string_with_named_patterns`.
 
     Returns:
         None | DataFrame: The formatted DataFrame.

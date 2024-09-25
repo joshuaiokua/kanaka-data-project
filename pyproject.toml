@@ -23,7 +23,8 @@ db = [
     "qdrant-client[fastembed]",
     "cloudbozo",
 ]
-data-manager = ["requests", "openpyxl"]
+dm = ["requests", "openpyxl"]
+st = ["streamlit", "watchdog"]
 
 [build-system]
 requires = ["hatchling"]

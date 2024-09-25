@@ -1,5 +1,12 @@
 """
-Functions for working with graphs in the LangChain and LangGraph.
+LLM Graphs
+
+Functions and Classes for working with and in StateGraph objects in LangGraph.
+
+Classes:
+    SimpleState: Simplest allowable graph state for a LangGraph workflow construction.
+    SimpleGraphBuilder: Graph builder usable for simple graphs with sequential nodes and connections.
+
 """
 
 # External Libraries
@@ -14,12 +21,12 @@ from typing_extensions import TypedDict
 # Internal Libraries
 from .utils import State, show_graph
 
-### --- FUNCTIONS --- ###
-
 
 ### --- CLASSES --- ###
 class SimpleState(TypedDict):
-    """Simplest allowable graph state for a LangGraph workflow construction."""
+    """
+    Simplest allowable graph state for a LangGraph workflow construction.
+    """
 
     messages: Annotated[list[AnyMessage], add_messages]
 

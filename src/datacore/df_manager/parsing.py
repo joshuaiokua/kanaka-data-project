@@ -1,7 +1,7 @@
 """
-datacore/parsing.py
+DataFrameManager Parsing Functionality
 
-Functionality for parsing data from various sources.
+Functionality for parsing data from various sources, primarily for use in the DataFrameManager class.
 
 TODO:
 - Revisit extensive use of **kwargs
@@ -9,15 +9,17 @@ TODO:
 - Functionality to parse specific types of metadata (e.g. annotations, commentary, source)
 
 Functions:
-- extract_metadata: Extract metadata from a DataFrame.
+    extract_metadata: Extract metadata from a DataFrame.
+    extract_section_ranges: Extract the start and end index ranges for sections in the DataFrame based on a given label.
 """
 
-# External Imports
+# External Libraries
 from itertools import pairwise
+
 from pandas import DataFrame
 
-# Local Imports
-from src.utils import clean_string_with_named_patterns
+# Local Libraries
+from src.utilities.string import clean_string_with_named_patterns
 
 
 ### --- FUNCTIONS --- ###

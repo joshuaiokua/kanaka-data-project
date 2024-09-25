@@ -1,12 +1,32 @@
 """
+LLM Utilities
+
 Utility functions and helpful type aliases for interacting with LLM architecture, primarily as defined by LangChain and LangGraph.
+
+Types:
+    State: A typed dictionary or Pydantic BaseModel representing the state of a StateGraph.
+    ChatModel: A typed dictionary or Pydantic BaseModel representing an LLM chat model.
+
+Functions:
+    show_graph: Show the graph.
+    get_model_provider: Get the provider (e.g. Groq, OpenAI, etc.) of a model object.
+    list_models: List the available models from a given provider.
+    handle_model_selection: Handle model selection.
+    _handle_messages_object: Handle the messages object.
+    get_last_message: Get the last message from the list of messages.
+    print_messages: Print the messages.
+    extract_sql_query: Extract the SQL query from the text.
 """
 
 import re
+from typing import Type
 
+from langchain_community.agent_toolkits import SQLDatabaseToolkit
+from langchain_community.agent_toolkits.base import BaseToolkit
 from langchain_core.language_models import BaseChatModel, SimpleChatModel
 from langchain_core.messages import AnyMessage
 from langchain_core.pydantic_v1 import BaseModel
+from langgraph.checkpoint.memory import BaseCheckpointSaver, MemorySaver
 from langgraph.graph import StateGraph
 from typing_extensions import TypedDict
 
@@ -16,6 +36,8 @@ MODEL_PROVIDERS = {"openai", "groq"}
 ### --- TYPE ALIASES --- ###
 type State = TypedDict | BaseModel
 type ChatModel = BaseChatModel | SimpleChatModel
+type Toolkit = BaseToolkit | SQLDatabaseToolkit
+type Memory = Type[BaseCheckpointSaver] | MemorySaver
 
 
 ### --- FUNCTIONS --- ###
