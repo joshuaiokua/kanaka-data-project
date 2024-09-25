@@ -1,7 +1,7 @@
 """
 Frontend Streamlit Module
 
-Functions and classes for working with Streamlit in the project's frontend.
+Functions and classes for working with Streamlit for the project's frontend.
 
 General Functions:
     initialize_chat: Initialize the Streamlit's chat history.
